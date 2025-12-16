@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tin tức | Fashion Shop</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/footer.css">
+    <link rel="stylesheet" href="/assets/css/news.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <%- include('partials/header') %>
+
+        <!-- BREADCRUMB -->
+        <div class="breadcrumb">
+            <a href="/home">Trang chủ</a>
+            <span>›</span>
+            <span class="current">Tin tức</span>
+        </div>
+
+        <!-- NEWS HERO -->
+        <section class="news-hero">
+            <div class="container">
+                <div class="hero-content">
+                    <span class="hero-label">TIN TỨC THỜI TRANG</span>
+                    <h1 class="hero-title">Xu Hướng & Cảm Hứng</h1>
+                    <p class="hero-description">
+                        Cập nhật những xu hướng thời trang mới nhất, bí quyết phối đồ và những câu chuyện truyền cảm
+                        hứng
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURED NEWS -->
+        <section class="featured-news">
+            <div class="container">
+                <article class="featured-article">
+                    <a href="/news/1" class="featured-link">
+                        <div class="featured-image">
+                            <img src="https://images.pexels.com/photos/1926769/pexels-photo-1926769.jpeg?auto=compress&cs=tinysrgb&w=1200"
+                                alt="Xu hướng thời trang">
+                            <span class="featured-badge">Nổi bật</span>
+                        </div>
+                        <div class="featured-content">
+                            <div class="featured-meta">
+                                <span class="meta-item"><i class="far fa-calendar"></i> 15/12/2024</span>
+                                <span class="meta-item"><i class="far fa-user"></i> Fashion Editor</span>
+                                <span class="meta-item"><i class="far fa-clock"></i> 5 phút đọc</span>
+                            </div>
+                            <h2 class="featured-title">Xu Hướng Thời Trang Thu Đông 2024: Sự Trở Lại Của Phong Cách Tối
+                                Giản</h2>
+                            <p class="featured-excerpt">
+                                Khám phá những xu hướng thời trang nổi bật nhất mùa thu đông năm nay với sự kết hợp hoàn
+                                hảo giữa phong
+                                cách cổ điển và hiện đại. Từ áo khoác dáng dài đến những chiếc quần ống rộng, tất cả đều
+                                hướng đến sự
+                                thoải mái và thanh lịch.
+                            </p>
+                            <span class="read-more-btn">Đọc tiếp <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+                </article>
+            </div>
+        </section>
+
+        <!-- NEWS CATEGORIES -->
+        <section class="news-categories">
+            <div class="container">
+                <div class="categories-tabs">
+                    <button class="category-tab active" data-category="all">Tất cả</button>
+                    <button class="category-tab" data-category="trend">Xu hướng</button>
+                    <button class="category-tab" data-category="style">Style Tips</button>
+                    <button class="category-tab" data-category="collection">Bộ sưu tập</button>
+                    <button class="category-tab" data-category="guide">Hướng dẫn</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEWS GRID -->
+        <section class="news-list">
+            <div class="container">
+                <div class="news-grid-main">
+                    <!-- News Article 1 -->
+                    <article class="news-article" data-category="style">
+                        <a href="/news/2" class="article-link">
+                            <div class="article-image">
+                                <img src="https://images.pexels.com/photos/1926769/pexels-photo-1926769.jpeg?auto=compress&cs=tinysrgb&w=600"
+                                    alt="Phối đồ công sở">
+                                <span class="article-badge style">Style Tips</span>
+                            </div>
+                            <div class="article-content">
+                                <div class="article-meta">
+                                    <span><i class="far fa-calendar"></i> 14/12/2024</span>
+                                    <span><i class="far fa-clock"></i> 4 phút</span>
+                                </div>
+                                <h3 class="article-title">5 Cách Phối Đồ Công Sở Thanh Lịch Cho Nữ Giới</h3>
+                                <p class="article-excerpt">
+                                    Gợi ý những set đồ công sở vừa chuyên nghiệp vừa thời trang, giúp bạn tự tin trong
+                                    mọi cuộc họp và gặp
+                                    gỡ quan trọng.
+                                </p>
+                            </div>
+                        </a>
+                    </article>
+
+                    <!-- News Article 2 -->
+                    <article class="news-article" data-category="collection">
+                        <a href="/news/3" class="article-link">
+                            <div class="article-image">
+                                <img src="https://images.pexels.com/photos/1884581/pexels-photo-1884581.jpeg?auto=compress&cs=tinysrgb&w=600"
+                                    alt="Bộ sưu tập">
+                                <span class="article-badge collection">Bộ sưu tập</span>
+                            </div>
+                            <div class="article-content">
+                                <div class="article-meta">
+                                    <span><i class="far fa-calendar"></i> 13/12/2024</span>
+                                    <span><i class="far fa-clock"></i> 3 phút</span>
+                                </div>
+                                <h3 class="article-title">Bộ Sưu Tập Mùa Đông: Ấm Áp Và Phong Cách</h3>
+                                <p class="article-excerpt">
+                                    Khám phá bộ sưu tập mới nhất với những thiết kế ấm áp, phù hợp cho mùa đông lạnh giá
+                                    nhưng vẫn giữ
+                                    được phong cách thời trang.
+                                </p>
+                            </div>
+                        </a>
+                    </article>
+
+                    <!-- News Article 3 -->
+                    <article class="news-article" data-category="guide">
+                        <a href="/news/4" class="article-link">
+                            <div class="article-image">
+                                <img src="https://images.pexels.com/photos/996329/pexels-photo-996329.jpeg?auto=compress&cs=tinysrgb&w=600"
+                                    alt="Bảo quản quần áo">
+                                <span class="article-badge guide">Hướng dẫn</span>
+                            </div>
+                            <div class="article-content">
+                                <div class="article-meta">
+                                    <span><i class="far fa-calendar"></i> 12/12/2024</span>
+                                    <span><i class="far fa-clock"></i> 6 phút</span>
+                                </div>
+                                <h3 class="article-title">Bí Quyết Bảo Quản Quần Áo Luôn Như Mới</h3>
+                                <p class="article-excerpt">
+                                    Những mẹo nhỏ giúp quần áo của bạn bền đẹp theo thời gian, từ cách giặt đúng cách
+                                    đến bảo quản hợp lý.
+                                </p>
+                            </div>
+                        </a>
+                    </article>
+
+                    <!-- News Article 4 -->
+                    <article class="news-article" data-category="trend">
+                        <a href="/news/5" class="article-link">
+                            <div class="article-image">
+                                <img src="https://images.pexels.com/photos/1055691/pexels-photo-1055691.jpeg?auto=compress&cs=tinysrgb&w=600"
+                                    alt="Màu sắc thời trang">
+                                <span class="article-badge trend">Xu hướng</span>
+                            </div>
+                            <div class="article-content">
+                                <div class="article-meta">
+                                    <span><i class="far fa-calendar"></i> 11/12/2024</span>
+                                    <span><i class="far fa-clock"></i> 5 phút</span>
+                                </div>
+                                <h3 class="article-title">Màu Sắc Thời Trang Năm 2024: Từ Pastel Đến Neon</h3>
+                                <p class="article-excerpt">
+                                    Tìm hiểu về bảng màu thời trang hot nhất năm nay và cách phối hợp chúng để tạo nên
+                                    phong cách riêng
+                                    biệt.
+                                </p>
+                            </div>
+                        </a>
+                    </article>
+
+                    <!-- News Article 5 -->
+                    <article class="news-article" data-category="style">
+                        <a href="/news/6" class="article-link">
+                            <div class="article-image">
+                                <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600"
+                                    alt="Phụ kiện thời trang">
+                                <span class="article-badge style">Style Tips</span>
+                            </div>
+                            <div class="article-content">
+                                <div class="article-meta">
+                                    <span><i class="far fa-calendar"></i> 10/12/2024</span>
+                                    <span><i class="far fa-clock"></i> 4 phút</span>
+                                </div>
+                                <h3 class="article-title">Phụ Kiện Thời Trang: Điểm Nhấn Hoàn Hảo Cho Outfit</h3>
+                                <p class="article-excerpt">
+                                    Cách sử dụng phụ kiện để nâng tầm trang phục, từ túi xách, giày dép đến trang sức và
+                                    kính mát.
+                                </p>
+                            </div>
+                        </a>
+                    </article>
+
+                    <!-- News Article 6 -->
+                    <article class="news-article" data-category="trend">
+                        <a href="/news/7" class="article-link">
+                            <div class="article-image">
+                                <img src="https://images.pexels.com/photos/1488507/pexels-photo-1488507.jpeg?auto=compress&cs=tinysrgb&w=600"
+                                    alt="Thời trang bền vững">
+                                <span class="article-badge trend">Xu hướng</span>
+                            </div>
+                            <div class="article-content">
+                                <div class="article-meta">
+                                    <span><i class="far fa-calendar"></i> 09/12/2024</span>
+                                    <span><i class="far fa-clock"></i> 7 phút</span>
+                                </div>
+                                <h3 class="article-title">Thời Trang Bền Vững: Xu Hướng Của Tương Lai</h3>
+                                <p class="article-excerpt">
+                                    Tìm hiểu về phong trào thời trang bền vững và cách bạn có thể đóng góp vào việc bảo
+                                    vệ môi trường qua
+                                    lựa chọn trang phục.
+                                </p>
+                            </div>
+                        </a>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <%- include('partials/footer') %>
+
+            <script>
+                // Category filter functionality
+                const categoryTabs = document.querySelectorAll('.category-tab');
+                const newsArticles = document.querySelectorAll('.news-article');
+
+                categoryTabs.forEach(tab => {
+                    tab.addEventListener('click', function () {
+                        // Remove active class from all tabs
+                        categoryTabs.forEach(t => t.classList.remove('active'));
+                        // Add active class to clicked tab
+                        this.classList.add('active');
+
+                        const category = this.getAttribute('data-category');
+
+                        // Filter articles
+                        newsArticles.forEach(article => {
+                            if (category === 'all' || article.getAttribute('data-category') === category) {
+                                article.style.display = 'block';
+                                setTimeout(() => {
+                                    article.style.opacity = '1';
+                                    article.style.transform = 'translateY(0)';
+                                }, 10);
+                            } else {
+                                article.style.opacity = '0';
+                                article.style.transform = 'translateY(20px)';
+                                setTimeout(() => {
+                                    article.style.display = 'none';
+                                }, 300);
+                            }
+                        });
+                    });
+                });
+            </script>
+</body>
+
+</html>

@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý tài khoản - Fashion Shop</title>
+    <link rel="stylesheet" href="/assets/css/admin-dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            color: #333;
+        }
+
+        .close {
+            font-size: 28px;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal-buttons button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .btn-submit {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .btn-submit:hover {
+            background-color: #45a049;
+        }
+
+        .btn-cancel {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .btn-cancel:hover {
+            background-color: #da190b;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>Fashion Shop</h2>
+            <p>Admin Dashboard</p>
+        </div>
+
+        <div class="sidebar-menu">
+            <a href="/admin/dashboard" class="menu-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="/admin/users" class="menu-item active">
+                <i class="fas fa-users"></i>
+                <span>Quản lý tài khoản</span>
+            </a>
+            <a href="/admin/products" class="menu-item">
+                <i class="fas fa-tshirt"></i>
+                <span>Quản lý sản phẩm</span>
+            </a>
+            <a href="/admin/orders" class="menu-item">
+                <i class="fas fa-shopping-bag"></i>
+                <span>Quản lý đơn hàng</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header">
+            <h1>Quản lý tài khoản</h1>
+            <div class="user-info">
+                <div class="user-avatar">A</div>
+                <span>Admin User</span>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                </button>
+            </div>
+        </div>
+
+        <!-- Users Table -->
+        <div class="table-container">
+            <div class="table-header"
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>Danh sách người dùng</h2>
+                <div class="actions" style="display: flex; gap: 10px; align-items: center;">
+                    <input type="text" id="searchInput" placeholder="Tìm kiếm theo email, tên..."
+                        value="<%= typeof searchQuery !== 'undefined' ? searchQuery : '' %>"
+                        style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; width: 250px;">
+                    <button class="btn btn-primary" onclick="searchUsers()">
+                        <i class="fas fa-search"></i> Tìm kiếm
+                    </button>
+                    <button class="btn btn-success" onclick="showAddUserModal()">
+                        <i class="fas fa-user-plus"></i> Thêm người dùng
+                    </button>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên đăng nhập</th>
+                        <th>Họ tên</th>
+                        <th>Email</th>
+                        <th>Số điện thoại</th>
+                        <th>Địa chỉ</th>
+                        <th>Vai trò</th>
+                        <th>Trạng thái</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTable">
+                    <% users.forEach(function(user) { %>
+                        <tr>
+                            <td>
+                                <%= user.UserID %>
+                            </td>
+                            <td>
+                                <%= user.Username %>
+                            </td>
+                            <td>
+                                <%= user.FullName || 'N/A' %>
+                            </td>
+                            <td>
+                                <%= user.Email %>
+                            </td>
+                            <td>
+                                <%= user.Phone || 'N/A' %>
+                            </td>
+                            <td>
+                                <%= user.Address || 'N/A' %>
+                            </td>
+                            <td>
+                                <%= user.Role %>
+                            </td>
+                            <td>
+                                <span class="status-<%= user.Status === 1 ? 'active' : 'inactive' %>">
+                                    <%= user.Status===1 ? 'Hoạt động' : 'Khóa' %>
+                                </span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn btn-primary action-btn" onclick="editUser(<%= user.UserID %>)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <% if(user.Status===1) { %>
+                                        <button class="btn btn-warning action-btn"
+                                            onclick="toggleUser(<%= user.UserID %>, 0)">
+                                            <i class="fas fa-lock"></i>
+                                        </button>
+                                        <% } else { %>
+                                            <button class="btn btn-success action-btn"
+                                                onclick="toggleUser(<%= user.UserID %>, 1)">
+                                                <i class="fas fa-unlock"></i>
+                                            </button>
+                                            <% } %>
+                                                <button class="btn btn-danger action-btn"
+                                                    onclick="deleteUser(<%= user.UserID %>)">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal Thêm Người Dùng -->
+    <div id="addUserModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Thêm người dùng mới</h2>
+                <span class="close" onclick="closeAddUserModal()">&times;</span>
+            </div>
+            <form id="addUserForm">
+                <div class="form-group">
+                    <label for="username">Tên đăng nhập *</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="fullname">Họ tên</label>
+                    <input type="text" id="fullname" name="fullname">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Số điện thoại</label>
+                    <input type="text" id="phone" name="phone">
+                </div>
+                <div class="form-group">
+                    <label for="password">Mật khẩu *</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirm">Xác nhận mật khẩu *</label>
+                    <input type="password" id="confirm" name="confirm" required>
+                </div>
+                <div class="form-group">
+                    <label for="role">Vai trò *</label>
+                    <select id="role" name="role" required>
+                        <option value="User">User</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+                </div>
+                <div class="modal-buttons">
+                    <button type="submit" class="btn-submit">Thêm người dùng</button>
+                    <button type="button" class="btn-cancel" onclick="closeAddUserModal()">Hủy</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Chỉnh Sửa Người Dùng -->
+    <div id="editUserModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Chỉnh sửa người dùng</h2>
+                <span class="close" onclick="closeEditUserModal()">&times;</span>
+            </div>
+            <form id="editUserForm">
+                <input type="hidden" id="edit-userId" name="userId">
+                <div class="form-group">
+                    <label for="edit-username">Tên đăng nhập *</label>
+                    <input type="text" id="edit-username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-fullname">Họ tên</label>
+                    <input type="text" id="edit-fullname" name="fullname">
+                </div>
+                <div class="form-group">
+                    <label for="edit-email">Email *</label>
+                    <input type="email" id="edit-email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-phone">Số điện thoại</label>
+                    <input type="text" id="edit-phone" name="phone">
+                </div>
+                <div class="form-group">
+                    <label for="edit-address">Địa chỉ</label>
+                    <input type="text" id="edit-address" name="address">
+                </div>
+                <div class="form-group">
+                    <label for="edit-role">Vai trò *</label>
+                    <select id="edit-role" name="role" required>
+                        <option value="User">User</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+                </div>
+                <div class="modal-buttons">
+                    <button type="submit" class="btn-submit">Cập nhật</button>
+                    <button type="button" class="btn-cancel" onclick="closeEditUserModal()">Hủy</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function logout() {
+            Swal.fire({
+                title: 'Đăng xuất?',
+                text: 'Bạn có chắc muốn đăng xuất?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Đăng xuất',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/admin/logout';
+                }
+            });
+        }
+
+        function searchUsers() {
+            const searchTerm = document.getElementById('searchInput').value.trim();
+            // Redirect to reload page with search param
+            window.location.href = `/admin/users?search=${encodeURIComponent(searchTerm)}`;
+        }
+
+        // Add Enter key support for search
+        document.getElementById('searchInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                searchUsers();
+            }
+        });
+
+        async function editUser(userId) {
+            try {
+                // Fetch thông tin user từ server
+                const response = await fetch(`/admin/users/get/${userId}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    const user = data.user;
+
+                    // Điền dữ liệu vào form
+                    document.getElementById('edit-userId').value = user.UserID;
+                    document.getElementById('edit-username').value = user.Username;
+                    document.getElementById('edit-fullname').value = user.FullName || '';
+                    document.getElementById('edit-email').value = user.Email;
+                    document.getElementById('edit-phone').value = user.Phone || '';
+                    document.getElementById('edit-address').value = user.Address || '';
+                    document.getElementById('edit-role').value = user.Role;
+
+                    // Hiển thị modal
+                    document.getElementById('editUserModal').style.display = 'block';
+                } else {
+                    Swal.fire('Lỗi!', data.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire('Lỗi!', 'Có lỗi xảy ra khi tải thông tin người dùng', 'error');
+            }
+        }
+
+        function closeEditUserModal() {
+            document.getElementById('editUserModal').style.display = 'none';
+            document.getElementById('editUserForm').reset();
+        }
+
+        function toggleUser(userId, status) {
+            Swal.fire({
+                title: status === 1 ? 'Mở khóa tài khoản?' : 'Khóa tài khoản?',
+                text: 'Bạn có chắc muốn ' + (status === 1 ? 'mở khóa' : 'khóa') + ' người dùng này?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Xác nhận',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/admin/users/toggle/${userId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ status: status })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire('Thành công!', 'Đã cập nhật trạng thái người dùng', 'success').then(() => {
+                                    location.reload();
+                                });
+                            } else {
+                                Swal.fire('Lỗi!', data.message, 'error');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            Swal.fire('Lỗi!', 'Có lỗi xảy ra', 'error');
+                        });
+                }
+            });
+        }
+
+        function deleteUser(userId) {
+            Swal.fire({
+                title: 'Xóa người dùng?',
+                text: 'Bạn có chắc muốn XÓA VĨNH VIỄN người dùng này? Hành động này không thể hoàn tác!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Xóa',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/admin/users/delete/${userId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire('Đã xóa!', 'Xóa người dùng thành công!', 'success').then(() => {
+                                    location.reload();
+                                });
+                            } else {
+                                Swal.fire('Lỗi!', data.message, 'error');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            Swal.fire('Lỗi!', 'Có lỗi xảy ra', 'error');
+                        });
+                }
+            });
+        }
+
+        // Modal functions
+        function showAddUserModal() {
+            document.getElementById('addUserModal').style.display = 'block';
+        }
+
+        function closeAddUserModal() {
+            document.getElementById('addUserModal').style.display = 'none';
+            document.getElementById('addUserForm').reset();
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function (event) {
+            const addModal = document.getElementById('addUserModal');
+            const editModal = document.getElementById('editUserModal');
+
+            if (event.target == addModal) {
+                closeAddUserModal();
+            }
+            if (event.target == editModal) {
+                closeEditUserModal();
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('addUserForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = {
+                username: document.getElementById('username').value,
+                fullname: document.getElementById('fullname').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                password: document.getElementById('password').value,
+                confirm: document.getElementById('confirm').value,
+                role: document.getElementById('role').value
+            };
+
+            if (formData.password !== formData.confirm) {
+                Swal.fire('Lỗi!', 'Mật khẩu không khớp!', 'error');
+                return;
+            }
+
+            if (formData.password.length < 8) {
+                Swal.fire('Lỗi!', 'Mật khẩu phải có ít nhất 8 ký tự!', 'error');
+                return;
+            }
+
+            fetch('/admin/users/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire('Thành công!', 'Thêm người dùng thành công!', 'success').then(() => {
+                            closeAddUserModal();
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire('Lỗi!', data.message, 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire('Lỗi!', 'Có lỗi xảy ra khi thêm người dùng', 'error');
+                });
+        });
+
+        // Handle edit form submission
+        document.getElementById('editUserForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const userId = document.getElementById('edit-userId').value;
+            const formData = {
+                username: document.getElementById('edit-username').value,
+                fullname: document.getElementById('edit-fullname').value,
+                email: document.getElementById('edit-email').value,
+                phone: document.getElementById('edit-phone').value,
+                address: document.getElementById('edit-address').value,
+                role: document.getElementById('edit-role').value
+            };
+
+            fetch(`/admin/users/update/${userId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire('Thành công!', 'Cập nhật người dùng thành công!', 'success').then(() => {
+                            closeEditUserModal();
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire('Lỗi!', data.message, 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire('Lỗi!', 'Có lỗi xảy ra khi cập nhật người dùng', 'error');
+                });
+        });
+    </script>
+</body>
+
+</html>

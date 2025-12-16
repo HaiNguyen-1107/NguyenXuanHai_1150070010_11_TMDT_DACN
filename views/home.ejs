@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | Fashion Shop</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/home.css">
+    <link rel="stylesheet" href="/assets/css/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+    <%- include('partials/header') %>
+
+        <section class="banner"></section>
+
+        <section class="categories">
+            <h2 class="title">DANH MỤC NỔI BẬT </h2>
+            <div class="categories-list">
+                <div class="category-item">
+                    <a href="menshirt">
+                        <img src="/assets/img/menshirt.jpg">
+                        <h3>Áo nam</h3>
+                    </a>
+                </div>
+
+                <div class="category-item">
+                    <a href="menpants">
+                        <img src="/assets/img/menpants.jpg">
+                        <h3>Quần nam</h3>
+                    </a>
+                </div>
+
+                <div class="category-item">
+                    <a href="menaccessories">
+                        <img src="/assets/img/men accessories .jpg">
+                        <h3>Phụ kiện nam</h3>
+                    </a>
+                </div>
+
+                <div class="category-item">
+                    <a href="womenshirt">
+                        <img src="/assets/img/women's shirt.jpg">
+                        <h3>Áo nữ</h3>
+                    </a>
+                </div>
+
+                <div class="category-item">
+                    <a href="womenpants">
+                        <img src="/assets/img/women's pants.jpg">
+                        <h3>Quần nữ</h3>
+                    </a>
+                </div>
+
+                <div class="category-item">
+                    <a href="womenaccessories">
+                        <img src="/assets/img/phukien.jpg">
+                        <h3>Phụ kiện nữ</h3>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="services">
+            <div class="service-item">
+                <i class="fa-solid fa-right-left"></i>
+                <h3>Giao hàng miễn phí</h3>
+                <p>Đăng ký để cập nhật và nhận giao hàng miễn phí</p>
+            </div>
+
+            <div class="service-item">
+                <i class="fa-solid fa-truck-fast"></i>
+                <h3>Giao hàng trong 30 phút</h3>
+                <p>Mọi thứ bạn đặt hàng sẽ nhanh chóng được giao đến tận nơi.</p>
+            </div>
+
+            <div class="service-item">
+                <i class="fa-solid fa-phone-volume"></i>
+                <h3>Đảm bảo chất lượng tốt nhất</h3>
+                <p>Fashion Shop là một chuỗi cửa hàng gia đình quốc gia.</p>
+            </div>
+        </section>
+
+        <section class="new-products">
+            <div class="container">
+                <div class="new-products-header">
+                    <h2>Sản phẩm mới nhất</h2>
+                    <a href="/products/new" class="view-all">Xem tất cả →</a>
+                </div>
+
+                <div class="new-products-wrapper">
+                    <button class="arrow left">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+
+                    <div class="new-products-list">
+                        <% if (newProducts && newProducts.length> 0) { %>
+                            <% newProducts.forEach(product=> { %>
+                                <div class="product-card">
+                                    <a href="/product/<%= product.ProductID %>">
+                                        <div class="product-img">
+                                            <img src="<%= product.Image %>" alt="<%= product.ProductName %>">
+                                        </div>
+                                        <div class="product-info">
+                                            <h4 class="product-name">
+                                                <%= product.ProductName %>
+                                            </h4>
+                                            <p class="product-price">
+                                                <%= product.Price.toLocaleString() %>đ
+                                            </p>
+                                        </div>
+                                    </a>
+                                </div>
+                                <% }) %>
+                                    <% } %>
+                    </div>
+
+                    <button class="arrow right">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- BỘ SƯU TẬP: 1 TRÁI DỌC + 4 PHẢI VUÔNG -->
+        <section class="collections">
+            <div class="container">
+                <div class="collections-header">
+                    <div class="header-left">
+
+                        <h2 class="section-title">Bộ sưu tập</h2>
+                    </div>
+                    <a href="/products" class="view-all-btn">Xem thêm →</a>
+                </div>
+
+                <div class="collections-masonry">
+                    <a href="/products" class="collection-item large">
+                        <img src="/assets/img/collection-men.jpg" alt="Nam">
+                    </a>
+
+                    <a href="/products" class="collection-item small">
+                        <img src="/assets/img/collection-women.jpg" alt="Nữ">
+                    </a>
+
+                    <a href="/products" class="collection-item small">
+                        <img src="/assets/img/collection-accessories.jpg" alt="Phụ kiện">
+                    </a>
+
+                    <a href="/products" class="collection-item small">
+                        <img src="/assets/img/collection-sale.jpg" alt="Sale">
+                    </a>
+
+                    <a href="/products" class="collection-item small">
+                        <img src="/assets/img/collection-new.jpg" alt="Mới">
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="best-seller">
+            <div class="container">
+                <div class="best-seller-header">
+                    <h2>Sản phẩm bán chạy</h2>
+                    <a href="/products/bestseller" class="view-all">Xem tất cả →</a>
+                </div>
+
+                <div class="best-seller-wrapper">
+                    <button class="arrow left">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+
+                    <div class="best-seller-list">
+                        <% if (bestSellers && bestSellers.length> 0) { %>
+                            <% bestSellers.forEach(product=> { %>
+                                <div class="product-card">
+                                    <a href="/product/<%= product.ProductID %>">
+                                        <div class="product-img">
+                                            <img src="<%= product.Image %>" alt="<%= product.ProductName %>">
+                                        </div>
+                                        <div class="product-info">
+                                            <h4 class="product-name">
+                                                <%= product.ProductName %>
+                                            </h4>
+                                            <p class="product-price">
+                                                <%= product.Price.toLocaleString() %>đ
+                                            </p>
+                                        </div>
+                                    </a>
+                                </div>
+                                <% }) %>
+                                    <% } %>
+                    </div>
+
+                    <button class="arrow right">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEWS BANNER SECTION -->
+        <section class="news-banner">
+            <div class="container">
+                <div class="news-header">
+                    <div class="header-left">
+                        <span class="header-label">TIN TỨC THỜI TRANG</span>
+                        <h2 class="section-title">Xu Hướng & Cảm Hứng</h2>
+                    </div>
+                    <a href="/news" class="view-all-btn">Xem tất cả →</a>
+                </div>
+
+                <div class="news-grid">
+                    <!-- Featured News (Large) -->
+                    <article class="news-card featured">
+                        <a href="/news/1" class="news-link">
+                            <div class="news-image">
+                                <img src="https://images.pexels.com/photos/1926769/pexels-photo-1926769.jpeg?auto=compress&cs=tinysrgb&w=800"
+                                    alt="Xu hướng thời trang">
+                                <span class="news-badge">Xu hướng</span>
+                            </div>
+                            <div class="news-content">
+                                <div class="news-meta">
+                                    <span class="news-date"><i class="far fa-calendar"></i> 15/12/2024</span>
+                                    <span class="news-author"><i class="far fa-user"></i> Fashion Editor</span>
+                                </div>
+                                <h3 class="news-title">Xu Hướng Thời Trang Thu Đông 2024: Sự Trở Lại Của Phong Cách Tối
+                                    Giản</h3>
+                                <p class="news-excerpt">Khám phá những xu hướng thời trang nổi bật nhất mùa thu đông năm
+                                    nay với sự kết hợp hoàn hảo giữa phong cách cổ điển và hiện đại...</p>
+                                <span class="read-more">Đọc thêm <i class="fas fa-arrow-right"></i></span>
+                            </div>
+                        </a>
+                    </article>
+
+                    <!-- Regular News Cards -->
+                    <article class="news-card">
+                        <a href="/news/2" class="news-link">
+                            <div class="news-image">
+                                <img src="https://images.pexels.com/photos/1926769/pexels-photo-1926769.jpeg?auto=compress&cs=tinysrgb&w=600"
+                                    alt="Phối đồ">
+                                <span class="news-badge style">Style Tips</span>
+                            </div>
+                            <div class="news-content">
+                                <div class="news-meta">
+                                    <span class="news-date"><i class="far fa-calendar"></i> 14/12/2024</span>
+                                </div>
+                                <h3 class="news-title">5 Cách Phối Đồ Công Sở Thanh Lịch Cho Nữ Giới</h3>
+                                <p class="news-excerpt">Gợi ý những set đồ công sở vừa chuyên nghiệp vừa thời trang...
+                                </p>
+                            </div>
+                        </a>
+                    </article>
+
+                    <article class="news-card">
+                        <a href="/news/3" class="news-link">
+                            <div class="news-image">
+                                <img src="https://images.pexels.com/photos/1884581/pexels-photo-1884581.jpeg?auto=compress&cs=tinysrgb&w=600"
+                                    alt="Bộ sưu tập">
+                                <span class="news-badge collection">Bộ sưu tập</span>
+                            </div>
+                            <div class="news-content">
+                                <div class="news-meta">
+                                    <span class="news-date"><i class="far fa-calendar"></i> 13/12/2024</span>
+                                </div>
+                                <h3 class="news-title">Bộ Sưu Tập Mùa Đông: Ấm Áp Và Phong Cách</h3>
+                                <p class="news-excerpt">Khám phá bộ sưu tập mới nhất với những thiết kế ấm áp...</p>
+                            </div>
+                        </a>
+                    </article>
+
+                    <article class="news-card">
+                        <a href="/news/4" class="news-link">
+                            <div class="news-image">
+                                <img src="https://images.pexels.com/photos/996329/pexels-photo-996329.jpeg?auto=compress&cs=tinysrgb&w=600"
+                                    alt="Chăm sóc">
+                                <span class="news-badge guide">Hướng dẫn</span>
+                            </div>
+                            <div class="news-content">
+                                <div class="news-meta">
+                                    <span class="news-date"><i class="far fa-calendar"></i> 12/12/2024</span>
+                                </div>
+                                <h3 class="news-title">Bí Quyết Bảo Quản Quần Áo Luôn Như Mới</h3>
+                                <p class="news-excerpt">Những mẹo nhỏ giúp quần áo của bạn bền đẹp theo thời gian...</p>
+                            </div>
+                        </a>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <main></main>
+
+        <%- include('partials/footer') %>
+
+            <script>
+                // Scroll functionality for New Products
+                const newProductsList = document.querySelector('.new-products-list');
+                const newLeftArrow = document.querySelector('.new-products-wrapper .arrow.left');
+                const newRightArrow = document.querySelector('.new-products-wrapper .arrow.right');
+
+                if (newLeftArrow && newRightArrow && newProductsList) {
+                    newLeftArrow.addEventListener('click', () => {
+                        newProductsList.scrollBy({
+                            left: -240,
+                            behavior: 'smooth'
+                        });
+                    });
+
+                    newRightArrow.addEventListener('click', () => {
+                        newProductsList.scrollBy({
+                            left: 240,
+                            behavior: 'smooth'
+                        });
+                    });
+                }
+
+                // Scroll functionality for Best Sellers
+                const bestSellerList = document.querySelector('.best-seller-list');
+                const bestLeftArrow = document.querySelector('.best-seller-wrapper .arrow.left');
+                const bestRightArrow = document.querySelector('.best-seller-wrapper .arrow.right');
+
+                if (bestLeftArrow && bestRightArrow && bestSellerList) {
+                    bestLeftArrow.addEventListener('click', () => {
+                        bestSellerList.scrollBy({
+                            left: -240,
+                            behavior: 'smooth'
+                        });
+                    });
+
+                    bestRightArrow.addEventListener('click', () => {
+                        bestSellerList.scrollBy({
+                            left: 240,
+                            behavior: 'smooth'
+                        });
+                    });
+                }
+            </script>
+</body>
+
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tất cả sản phẩm | Fashion Shop</title>
+
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/home.css">
+    <link rel="stylesheet" href="/assets/css/footer.css">
+    <link rel="stylesheet" href="/assets/css/products.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+    <%- include('partials/header') %>
+
+        <!-- BREADCRUMB -->
+        <div class="breadcrumb">
+            <a href="/home">Trang chủ</a>
+            <span>›</span>
+            <span class="current"> Quần nam</span>
+        </div>
+
+        <section class="categories">
+            <div class="categories-list">
+
+                <div class="category-item">
+                    <a href="menshirt">
+                        <img src="/assets/img/menshirt.jpg">
+                        <h3>Áo nam</h3>
+                    </a>
+                </div>
+
+
+                <div class="category-item">
+                    <a href="menpants">
+                        <img src="/assets/img/menpants.jpg">
+                        <h3>Quần nam</h3>
+                    </a>
+                </div>
+
+                <div class="category-item">
+                    <a href="menaccessories">
+                        <img src="/assets/img/men accessories .jpg">
+                        <h3>Phụ kiện nam</h3>
+                    </a>
+                </div>
+
+                <div class="category-item">
+                    <a href="womenshirt">
+                        <img src="/assets/img/women's shirt.jpg">
+                        <h3>Áo nữ</h3>
+                    </a>
+                </div>
+
+                <div class="category-item">
+                    <a href="womenpants">
+                        <img src="/assets/img/women's pants.jpg">
+                        <h3>Quần nữ</h3>
+                    </a>
+                </div>
+
+                <div class="category-item">
+                    <a href="womenaccessories">
+                        <img src="/assets/img/phukien.jpg">
+                        <h3>Phụ kiện nữ</h3>
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ========== LAYOUT 2 CỘT ========== -->
+        <div class="products-container">
+
+            <div class="filter-sidebar">
+                <h3 class="filter-title">Bộ lọc sản phẩm</h3>
+
+                <!-- Thương hiệu -->
+                <div class="filter-group">
+                    <h4>Thương hiệu</h4>
+                    <label><input type="checkbox"> Nike</label>
+                    <label><input type="checkbox"> Adidas</label>
+                    <label><input type="checkbox"> Gucci</label>
+                    <label><input type="checkbox"> LV</label>
+                </div>
+
+                <!-- Loại sản phẩm -->
+                <div class="filter-group">
+                    <h4>Loại sản phẩm</h4>
+                    <label><input type="checkbox"> Áo</label>
+                    <label><input type="checkbox"> Quần</label>
+                    <label><input type="checkbox"> Phụ kiện</label>
+                </div>
+
+                <!-- Giá -->
+                <div class="filter-group">
+                    <h4>Giá</h4>
+                    <label><input type="checkbox"> Dưới 200k</label>
+                    <label><input type="checkbox"> 200k – 500k</label>
+                    <label><input type="checkbox"> 500k – 1 triệu</label>
+                    <label><input type="checkbox"> Trên 1 triệu</label>
+                </div>
+            </div>
+
+
+            <div class="products-content">
+                <!-- PHẦN SẮP XẾP -->
+                <div class="sort-section">
+                    <h3 class="sort-title"> Quần nam </h3>
+                    <div class="sort-dropdown">
+                        <button class="sort-button">
+                            Sắp xếp theo
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="sort-options">
+                            <div class="sort-option active">Mặc định</div>
+                            <div class="sort-option">A – Z</div>
+                            <div class="sort-option">Z – A</div>
+                            <div class="sort-option">Giá tăng dần</div>
+                            <div class="sort-option">Giá giảm dần</div>
+                            <!-- ĐÃ BỎ HÀNG MỚI NHẤT VÀ CŨ NHẤT -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-list">
+
+                    <% menpants.forEach(p=> { %>
+
+
+                        <div class="product-card">
+
+                            <!-- ẢNH: click vào → vào chi tiết -->
+                            <a href="/product/<%= p.ProductID %>" class="product-link">
+                                <div class="product-img">
+                                    <img src="<%= p.Image %>" alt="">
+                                </div>
+                            </a>
+
+                            <!-- ICON HOVER -->
+                            <div class="product-actions">
+
+                                <!-- YÊU THÍCH (chưa login) -->
+                                <button onclick="requireLogin()">
+                                    <i class="fa-regular fa-heart"></i>
+                                </button>
+
+                                <!-- THÊM GIỎ (chưa login) -->
+                                <button onclick="requireLogin()">
+                                    <i class="fa-solid fa-cart-shopping"></i>
+                                </button>
+
+                            </div>
+
+                            <!-- TÊN + GIÁ -->
+                            <h4 class="product-name">
+                                <a href="/product/<%= p.ProductID %>">
+                                    <%= p.ProductName %>
+                                </a>
+                            </h4>
+
+                            <p class="product-price">
+                                <%= p.Price.toLocaleString() %>đ
+                            </p>
+                        </div>
+
+
+                        <% }) %>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+
+
+        <%- include('partials/footer') %>
+
+            <script>
+                function requireLogin() {
+                    const isLoggedIn = <%= user ? "true" : "false" %>;
+
+                    if (!isLoggedIn) {
+                        document.querySelector("#loginModal").style.display = "flex";
+                    }
+                }
+
+                // ========== SORT DROPDOWN FUNCTIONALITY ==========
+                const sortButton = document.querySelector('.sort-button');
+                const sortOptions = document.querySelector('.sort-options');
+                const sortOptionItems = document.querySelectorAll('.sort-option');
+                const productList = document.querySelector('.product-list');
+
+                // Toggle dropdown
+                sortButton.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    sortOptions.classList.toggle('show');
+                });
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function (e) {
+                    if (!e.target.closest('.sort-dropdown')) {
+                        sortOptions.classList.remove('show');
+                    }
+                });
+
+                // Handle sort option selection
+                sortOptionItems.forEach(option => {
+                    option.addEventListener('click', function () {
+                        sortOptionItems.forEach(opt => opt.classList.remove('active'));
+                        this.classList.add('active');
+                        sortButton.innerHTML = this.textContent + ' <i class="fas fa-chevron-down"></i>';
+                        sortOptions.classList.remove('show');
+                        sortProducts(this.textContent.trim());
+                    });
+                });
+
+                function sortProducts(sortType) {
+                    const products = Array.from(productList.querySelectorAll('.product-card'));
+
+                    products.sort((a, b) => {
+                        const nameA = a.querySelector('.product-name').textContent.trim();
+                        const nameB = b.querySelector('.product-name').textContent.trim();
+                        const priceA = parseInt(a.querySelector('.product-price').textContent.replace(/[^\d]/g, ''));
+                        const priceB = parseInt(b.querySelector('.product-price').textContent.replace(/[^\d]/g, ''));
+
+                        switch (sortType) {
+                            case 'A – Z':
+                                return nameA.localeCompare(nameB, 'vi');
+                            case 'Z – A':
+                                return nameB.localeCompare(nameA, 'vi');
+                            case 'Giá tăng dần':
+                                return priceA - priceB;
+                            case 'Giá giảm dần':
+                                return priceB - priceA;
+                            default:
+                                return 0;
+                        }
+                    });
+
+                    products.forEach(product => productList.appendChild(product));
+                }
+
+            </script>
+
+
+</body>
+
+</html>

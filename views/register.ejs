@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register | Fashion Shop</title>
+
+  <!-- Font Awesome icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #6e48aa, #9d50bb);
+    }
+
+    .register-container {
+      width: 370px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      border-radius: 15px;
+      padding: 40px 30px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      color: white;
+    }
+
+    .register-container h2 {
+      margin-bottom: 25px;
+      font-size: 26px;
+      font-weight: 600;
+    }
+
+    .input-box {
+      position: relative;
+      margin: 15px 0;
+    }
+
+    .input-box input {
+      width: 100%;
+      padding: 12px 40px 12px 15px;
+      border: none;
+      outline: none;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      font-size: 15px;
+    }
+
+    .input-box input::placeholder {
+      color: #eee;
+    }
+
+    .input-box i {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #ddd;
+    }
+
+    button {
+      width: 100%;
+      background: white;
+      color: #6e48aa;
+      border: none;
+      padding: 12px;
+      font-weight: 600;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #eee;
+    }
+
+    .login-link {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .login-link a {
+      color: #fff;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <h2>Register</h2>
+
+ 
+
+
+
+
+    <form action="/register" method="post">
+      <div class="input-box">
+        <input type="text" name="username" placeholder="Username" required>
+        <i class="fa-solid fa-user"></i>
+      </div>
+
+      <div class="input-box">
+        <input type="email" name="email" placeholder="Email" required>
+        <i class="fa-solid fa-envelope"></i>
+      </div>
+
+      <div class="input-box">
+        <input type="password" name="password" placeholder="Password" required minlength="8">
+        <i class="fa-solid fa-lock"></i>
+      </div>
+
+      <div class="input-box">
+        <input type="password" name="confirm" placeholder="Confirm Password" required>
+        <i class="fa-solid fa-lock"></i>
+      </div>
+
+      <button type="submit">Register</button>
+
+      <div class="login-link">
+        <p>Already have an account? <a href="/Login">Login</a></p>
+      </div>
+    </form>
+  </div>
+</body>
+<script>
+ 
+const pass = document.querySelector('input[name ="password"]');
+const conf = document.querySelector('input[name= "confirm"]');
+
+conf.addEventListener('input',() => { 
+
+
+  if(conf.value !== pass.value ){
+
+    conf.setCustomValidity('Mật khẩu xác nhận không khớp!');
+  }else{
+  
+     conf.setCustomValidity('');
+  }
+});
+
+pass.addEventListener('input', () =>{
+if(conf.value){
+ if(conf.value !== pass.value ){
+
+    conf.setCustomValidity('Mật khẩu xác nhận không khớp!');
+  }else{
+  
+     conf.setCustomValidity('');
+  }
+}});
+
+
+</script>
+
+
+</html>

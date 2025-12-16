@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin - Fashion Shop</title>
+    <link rel="stylesheet " href="/assets/css/admin-dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>Fashion Shop</h2>
+            <p>Admin Dashboard</p>
+        </div>
+
+        <div class="sidebar-menu">
+            <a href="#" class="menu-item active" data-tab="dashboard">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="menu-item" data-tab="users">
+                <i class="fas fa-users"></i>
+                <span>Quản lý tài khoản</span>
+            </a>
+            <a href="#" class="menu-item" data-tab="products">
+                <i class="fas fa-tshirt"></i>
+                <span>Quản lý sản phẩm</span>
+            </a>
+            <a href="#" class="menu-item" data-tab="orders">
+                <i class="fas fa-shopping-bag"></i>
+                <span>Quản lý đơn hàng</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header">
+            <h1>Dashboard Admin</h1>
+            <div class="user-info">
+                <div class="user-avatar">A</div>
+                <span>Admin User</span>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-cards">
+            <div class="stat-card users">
+                <i class="fas fa-users"></i>
+                <div class="stat-number">1,234</div>
+                <div class="stat-label">Tổng người dùng</div>
+            </div>
+            <div class="stat-card products">
+                <i class="fas fa-tshirt"></i>
+                <div class="stat-number">567</div>
+                <div class="stat-label">Tổng sản phẩm</div>
+            </div>
+            <div class="stat-card orders">
+                <i class="fas fa-shopping-bag"></i>
+                <div class="stat-number">89</div>
+                <div class="stat-label">Đơn hàng hôm nay</div>
+            </div>
+            <div class="stat-card revenue">
+                <i class="fas fa-dollar-sign"></i>
+                <div class="stat-number">25.6M</div>
+                <div class="stat-label">Doanh thu tháng</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab navigation
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                // Update active menu
+                document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+
+                // Redirect to corresponding page
+                const tab = this.dataset.tab;
+                if (tab !== 'dashboard') {
+                    window.location.href = `/admin/${tab}`;
+                }
+            });
+        });
+
+        // Logout function
+        function logout() {
+            Swal.fire({
+                title: 'Đăng xuất?',
+                text: 'Bạn có chắc muốn đăng xuất?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Đăng xuất',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/admin/logout';
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

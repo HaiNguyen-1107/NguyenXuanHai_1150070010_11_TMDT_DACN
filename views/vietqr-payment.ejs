@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh toán VietQR - Fashion Shop</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .payment-container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .payment-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .payment-header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .payment-header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .payment-body {
+            padding: 40px 30px;
+        }
+
+        .order-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        .order-info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+
+        .order-info-row:last-child {
+            margin-bottom: 0;
+            padding-top: 12px;
+            border-top: 2px dashed #dee2e6;
+            font-weight: bold;
+            font-size: 18px;
+            color: #667eea;
+        }
+
+        .qr-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .qr-code-wrapper {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .qr-code-wrapper img {
+            width: 300px;
+            height: 300px;
+            border-radius: 8px;
+        }
+
+        .bank-info {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .bank-info h3 {
+            color: #856404;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 8px 0;
+        }
+
+        .info-row label {
+            font-weight: 600;
+            color: #856404;
+        }
+
+        .info-row span {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .instructions {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .instructions h3 {
+            color: #0c5460;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+            color: #0c5460;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .warning-note {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            border-radius: 8px;
+            color: #721c24;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .warning-note strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .qr-code-wrapper {
+            animation: pulse 2s infinite;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .payment-container {
+                margin: 20px auto;
+            }
+
+            .payment-header h1 {
+                font-size: 24px;
+            }
+
+            .qr-code-wrapper img {
+                width: 250px;
+                height: 250px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="payment-container">
+        <!-- HEADER -->
+        <div class="payment-header">
+            <h1><i class="fas fa-qrcode"></i> Thanh toán VietQR</h1>
+            <p>Quét mã QR để chuyển khoản</p>
+        </div>
+
+        <!-- BODY -->
+        <div class="payment-body">
+            <!-- THÔNG TIN ĐỌN HÀNG -->
+            <div class="order-info">
+                <div class="order-info-row">
+                    <span>Mã đơn hàng:</span>
+                    <strong>#<%= orderId %></strong>
+                </div>
+                <div class="order-info-row">
+                    <span>Nội dung chuyển khoản:</span>
+                    <strong>
+                        <%= transferContent %>
+                    </strong>
+                </div>
+                <div class="order-info-row">
+                    <span>Tổng tiền:</span>
+                    <strong>
+                        <%= amount.toLocaleString() %>đ
+                    </strong>
+                </div>
+            </div>
+
+            <!-- QR CODE -->
+            <div class="qr-section">
+                <div class="qr-code-wrapper">
+                    <img src="<%= qrImageUrl %>" alt="VietQR Code" onerror="this.src='/assets/img/qr-error.png'">
+                </div>
+                <p style="color: #666; font-size: 14px;">
+                    <i class="fas fa-mobile-alt"></i> Quét mã QR bằng ứng dụng ngân hàng
+                </p>
+            </div>
+
+            <!-- THÔNG TIN NGÂN HÀNG -->
+            <div class="bank-info">
+                <h3><i class="fas fa-university"></i> Thông tin chuyển khoản</h3>
+                <div class="info-row">
+                    <label>Ngân hàng:</label>
+                    <span>
+                        <%= bankName %>
+                    </span>
+                </div>
+                <div class="info-row">
+                    <label>Số tài khoản:</label>
+                    <span>
+                        <%= accountNo %>
+                    </span>
+                </div>
+                <div class="info-row">
+                    <label>Chủ tài khoản:</label>
+                    <span>
+                        <%= accountName %>
+                    </span>
+                </div>
+                <div class="info-row">
+                    <label>Số tiền:</label>
+                    <span style="color: #dc3545; font-weight: bold;">
+                        <%= amount.toLocaleString() %>đ
+                    </span>
+                </div>
+                <div class="info-row">
+                    <label>Nội dung:</label>
+                    <span style="color: #dc3545; font-weight: bold;">
+                        <%= transferContent %>
+                    </span>
+                </div>
+            </div>
+
+            <!-- HƯỚNG DẪN -->
+            <div class="instructions">
+                <h3><i class="fas fa-info-circle"></i> Hướng dẫn thanh toán</h3>
+                <ol>
+                    <li>Mở ứng dụng ngân hàng hoặc ví điện tử trên điện thoại</li>
+                    <li>Chọn chức năng <strong>"Quét mã QR"</strong></li>
+                    <li>Quét mã QR phía trên</li>
+                    <li>Kiểm tra thông tin và xác nhận chuyển khoản</li>
+                    <li>Sau khi chuyển khoản thành công, bấm nút <strong>"Tôi đã thanh toán"</strong></li>
+                </ol>
+            </div>
+
+            <!-- LƯU Ý -->
+            <div class="warning-note">
+                <strong><i class="fas fa-exclamation-triangle"></i> Lưu ý quan trọng:</strong>
+                Vui lòng chuyển khoản ĐÚNG số tiền và ghi ĐÚNG nội dung "<%= transferContent %>" để đơn hàng được xử lý
+                    nhanh chóng.
+            </div>
+
+            <!-- BUTTONS -->
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="confirmPayment()" style="width: 100%;">
+                    <i class="fas fa-check-circle"></i> Tôi đã thanh toán
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function confirmPayment() {
+            const result = await Swal.fire({
+                title: 'Xác nhận thanh toán?',
+                text: 'Bạn đã chuyển khoản thành công?\n\nShop sẽ kiểm tra và xác nhận đơn hàng của bạn trong ít phút.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Đã thanh toán',
+                cancelButtonText: 'Chưa'
+            });
+
+            if (result.isConfirmed) {
+                // Hiển thị loading
+                const btn = document.querySelector('.btn-primary');
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
+
+                // Gọi API tạo đơn hàng
+                fetch('/checkout/vietqr-confirm', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Chuyển sang trang đơn hàng
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Đặt hàng thành công!',
+                                text: `Đơn hàng #${data.orderId} đã được tạo thành công!\n\nShop sẽ kiểm tra thanh toán và xử lý đơn hàng của bạn.`,
+                                confirmButtonText: 'Xem đơn hàng'
+                            }).then(() => {
+                                window.location.href = `/profile?tab=orders`;
+                            });
+                        } else {
+                            Swal.fire('Lỗi!', data.message, 'error');
+                            btn.disabled = false;
+                            btn.innerHTML = '<i class="fas fa-check-circle"></i> Tôi đã thanh toán';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire('Lỗi!', 'Có lỗi xảy ra. Vui lòng thử lại!', 'error');
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fas fa-check-circle"></i> Tôi đã thanh toán';
+                    });
+            }
+        }
+
+        // Auto refresh QR code every 5 minutes (tránh QR bị expire)
+        setTimeout(() => {
+            location.reload();
+        }, 5 * 60 * 1000);
+    </script>
+</body>
+
+</html>

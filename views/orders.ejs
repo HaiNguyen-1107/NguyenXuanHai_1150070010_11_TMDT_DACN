@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đơn hàng của bạn</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/orders.css">
+</head>
+
+<body>
+<%- include('partials/header') %>
+
+<div class="orders-container">
+
+    <h2>Đơn hàng của bạn</h2>
+
+    <!-- TAB MENU -->
+    <div class="order-tabs">
+        <button class="order-tab active" data-tab="Pending">Đang chờ xử lý</button>
+        <button class="order-tab" data-tab="Shipping">Đang giao</button>
+        <button class="order-tab" data-tab="Completed">Đã giao</button>
+        <button class="order-tab" data-tab="Cancelled">Đã hủy</button>
+    </div>
+
+    <!-- TAB CONTENT -->
+    <div class="order-list">
+
+        <% const statusList = ["Pending", "Shipping", "Completed", "Cancelled"]; %>
+
+        <% statusList.forEach(status => { %>
+            <div class="order-group" id="<%= status %>">
+                <% const filtered = orders.filter(o => o.Status === status); %>
+
+                <% if (filtered.length === 0) { %>
+                    <p class="empty">Chưa có đơn hàng</p>
+                <% } else { %>
+
+                    <% filtered.forEach(order => { %>
+                        <div class="order-item">
+                            <div class="order-info">
+                                <p><strong>Mã đơn:</strong> #<%= order.OrderID %></p>
+                                <p><strong>Ngày đặt:</strong> <%= order.CreatedAt.toLocaleString() %></p>
+                                <p><strong>Tổng tiền:</strong> <%= order.TotalAmount.toLocaleString() %>đ</p>
+                                <p><strong>Trạng thái:</strong> <%= order.Status %></p>
+                            </div>
+                        </div>
+                    <% }); %>
+
+                <% } %>
+            </div>
+        <% }); %>
+
+    </div>
+</div>
+
+<%- include('partials/footer') %>
+
+<script>
+    // TAB SWITCH
+    const tabs = document.querySelectorAll(".order-tab");
+    const groups = document.querySelectorAll(".order-group");
+
+    tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+            tabs.forEach(t => t.classList.remove("active"));
+            tab.classList.add("active");
+            
+            const target = tab.dataset.tab;
+            groups.forEach(g => g.style.display = "none");
+            document.getElementById(target).style.display = "block";
+        });
+    });
+
+    // Hiển thị tab đầu tiên
+    document.getElementById("Pending").style.display = "block";
+</script>
+
+</body>
+</html>

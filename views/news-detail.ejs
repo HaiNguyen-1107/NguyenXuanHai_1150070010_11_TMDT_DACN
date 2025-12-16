@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= newsId==='1' ? 'Xu Hướng Thời Trang Thu Đông 2024' : 'Tin tức' %> | Fashion Shop
+    </title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/footer.css">
+    <link rel="stylesheet" href="/assets/css/news-detail.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <%- include('partials/header') %>
+
+        <!-- BREADCRUMB -->
+        <div class="breadcrumb">
+            <a href="/home">Trang chủ</a>
+            <span>›</span>
+            <a href="/news">Tin tức</a>
+            <span>›</span>
+            <span class="current">Chi tiết</span>
+        </div>
+
+        <!-- NEWS DETAIL -->
+        <article class="news-detail">
+            <div class="container">
+                <div class="detail-wrapper">
+                    <!-- Main Content -->
+                    <div class="detail-main">
+                        <!-- Header -->
+                        <header class="detail-header">
+                            <span class="detail-badge">Xu hướng</span>
+                            <h1 class="detail-title">Xu Hướng Thời Trang Thu Đông 2024: Sự Trở Lại Của Phong Cách Tối
+                                Giản</h1>
+                            <div class="detail-meta">
+                                <div class="meta-left">
+                                    <span class="meta-item"><i class="far fa-calendar"></i> 15/12/2024</span>
+                                    <span class="meta-item"><i class="far fa-user"></i> Fashion Editor</span>
+                                    <span class="meta-item"><i class="far fa-clock"></i> 5 phút đọc</span>
+                                </div>
+                                <div class="meta-right">
+                                    <button class="share-btn"><i class="fas fa-share-alt"></i> Chia sẻ</button>
+                                </div>
+                            </div>
+                        </header>
+
+                        <!-- Featured Image -->
+                        <div class="detail-featured-image">
+                            <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1200&q=80"
+                                alt="Xu hướng thời trang">
+                        </div>
+
+                        <!-- Content -->
+                        <div class="detail-content">
+                            <p class="lead-paragraph">
+                                Mùa thu đông 2024 đánh dấu sự trở lại mạnh mẽ của phong cách tối giản (minimalism) trong
+                                thời trang.
+                                Sau những năm tháng của sự phô trương và cầu kỳ, giới mộ điệu thời trang đang hướng về
+                                những thiết kế
+                                đơn giản nhưng tinh tế, tập trung vào chất lượng và sự bền vững.
+                            </p>
+
+                            <h2>1. Màu Sắc Trung Tính Lên Ngôi</h2>
+                            <p>
+                                Bảng màu của mùa thu đông năm nay được thống trị bởi các tông màu trung tính như be,
+                                nâu, xám và đen.
+                                Những màu sắc này không chỉ dễ phối đồ mà còn mang lại vẻ thanh lịch, sang trọng cho
+                                người mặc. Đặc
+                                biệt, màu nâu caramel và be kem đang trở thành xu hướng hot nhất, xuất hiện trên mọi sàn
+                                diễn từ Paris
+                                đến Milan.
+                            </p>
+
+                            <div class="content-image">
+                                <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=80"
+                                    alt="Màu sắc trung tính">
+                                <p class="image-caption">Bảng màu trung tính thống trị xu hướng thu đông 2024</p>
+                            </div>
+
+                            <h2>2. Áo Khoác Dáng Dài - Must-Have Item</h2>
+                            <p>
+                                Áo khoác dáng dài tiếp tục là item không thể thiếu trong tủ đồ mùa đông. Từ áo khoác dạ
+                                cổ điển đến
+                                trench coat hiện đại, những thiết kế này không chỉ giữ ấm hiệu quả mà còn tạo nên
+                                silhouette thanh
+                                lịch, sang trọng. Điểm nhấn của mùa này là các thiết kế oversized với vai rộng, tạo cảm
+                                giác thoải mái
+                                nhưng vẫn rất thời trang.
+                            </p>
+
+                            <blockquote class="quote">
+                                "Thời trang tối giản không phải là sự đơn điệu, mà là nghệ thuật của sự tinh tế và chất
+                                lượng. Mỗi món
+                                đồ đều được lựa chọn cẩn thận, mang ý nghĩa riêng." - Coco Chanel
+                            </blockquote>
+
+                            <h2>3. Chất Liệu Tự Nhiên Được Ưu Ái</h2>
+                            <p>
+                                Xu hướng thời trang bền vững đang ngày càng được quan tâm, và mùa thu đông 2024 không
+                                phải ngoại lệ.
+                                Các chất liệu tự nhiên như len, cashmere, cotton hữu cơ và lụa được ưu tiên sử dụng.
+                                Không chỉ thân
+                                thiện với môi trường, những chất liệu này còn mang lại cảm giác thoải mái, sang trọng
+                                cho người mặc.
+                            </p>
+
+                            <div class="content-image">
+                                <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=800&q=80"
+                                    alt="Chất liệu tự nhiên">
+                                <p class="image-caption">Chất liệu tự nhiên - xu hướng bền vững</p>
+                            </div>
+
+                            <h2>4. Layering - Nghệ Thuật Phối Đồ Nhiều Lớp</h2>
+                            <p>
+                                Phối đồ nhiều lớp (layering) là kỹ thuật không thể thiếu trong mùa đông. Tuy nhiên, xu
+                                hướng năm nay
+                                hướng đến sự đơn giản và tinh tế hơn. Thay vì chồng chất quá nhiều lớp, hãy tập trung
+                                vào 2-3 lớp với
+                                màu sắc hài hòa và chất liệu phù hợp. Ví dụ: áo sơ mi trắng + áo len mỏng + áo khoác
+                                dáng dài tạo nên
+                                một outfit hoàn hảo.
+                            </p>
+
+                            <h2>5. Phụ Kiện Tối Giản Nhưng Tinh Tế</h2>
+                            <p>
+                                Phụ kiện trong xu hướng tối giản không cần quá nhiều, nhưng phải chọn lọc kỹ càng. Một
+                                chiếc túi da
+                                chất lượng cao, đôi giày boots cổ điển, hoặc chiếc khăn len mềm mại có thể hoàn thiện
+                                hoàn hảo cho
+                                outfit của bạn. Đặc biệt, túi xách dáng structured và giày boots cao cổ đang là những
+                                item được yêu
+                                thích nhất mùa này.
+                            </p>
+
+                            <div class="tips-box">
+                                <h3><i class="fas fa-lightbulb"></i> Tips Phối Đồ</h3>
+                                <ul>
+                                    <li>Đầu tư vào những món đồ cơ bản chất lượng cao thay vì mua nhiều đồ giá rẻ</li>
+                                    <li>Chọn màu sắc trung tính để dễ dàng mix & match</li>
+                                    <li>Chú trọng đến chất liệu và form dáng hơn là họa tiết</li>
+                                    <li>Phụ kiện đơn giản nhưng phải có điểm nhấn</li>
+                                    <li>Luôn giữ outfit gọn gàng, ngăn nắp</li>
+                                </ul>
+                            </div>
+
+                            <h2>Kết Luận</h2>
+                            <p>
+                                Xu hướng thời trang thu đông 2024 chứng minh rằng "less is more" - ít hơn chính là nhiều
+                                hơn. Phong
+                                cách tối giản không chỉ giúp bạn trông thanh lịch, sang trọng mà còn thể hiện sự tinh tế
+                                trong gu thẩm
+                                mỹ. Hãy đầu tư vào những món đồ chất lượng, bền vững và tạo nên phong cách riêng của
+                                bạn!
+                            </p>
+                        </div>
+
+                        <!-- Tags -->
+                        <div class="detail-tags">
+                            <span class="tag-label">Tags:</span>
+                            <a href="#" class="tag">Xu hướng</a>
+                            <a href="#" class="tag">Thu Đông 2024</a>
+                            <a href="#" class="tag">Minimalism</a>
+                            <a href="#" class="tag">Phối đồ</a>
+                        </div>
+
+                        <!-- Share -->
+                        <div class="detail-share">
+                            <p>Chia sẻ bài viết:</p>
+                            <div class="share-buttons">
+                                <a href="#" class="share-button facebook"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#" class="share-button twitter"><i class="fab fa-twitter"></i></a>
+                                <a href="#" class="share-button pinterest"><i class="fab fa-pinterest-p"></i></a>
+                                <a href="#" class="share-button linkedin"><i class="fab fa-linkedin-in"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar -->
+                    <aside class="detail-sidebar">
+                        <!-- Related News -->
+                        <div class="sidebar-widget">
+                            <h3 class="widget-title">Bài viết liên quan</h3>
+                            <div class="related-news">
+                                <a href="/news/2" class="related-item">
+                                    <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=200&q=80"
+                                        alt="Related">
+                                    <div class="related-content">
+                                        <h4>5 Cách Phối Đồ Công Sở Thanh Lịch</h4>
+                                        <span class="related-date"><i class="far fa-calendar"></i> 14/12/2024</span>
+                                    </div>
+                                </a>
+                                <a href="/news/3" class="related-item">
+                                    <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=200&q=80"
+                                        alt="Related">
+                                    <div class="related-content">
+                                        <h4>Bộ Sưu Tập Mùa Đông 2024</h4>
+                                        <span class="related-date"><i class="far fa-calendar"></i> 13/12/2024</span>
+                                    </div>
+                                </a>
+                                <a href="/news/4" class="related-item">
+                                    <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=200&q=80"
+                                        alt="Related">
+                                    <div class="related-content">
+                                        <h4>Bảo Quản Quần Áo Đúng Cách</h4>
+                                        <span class="related-date"><i class="far fa-calendar"></i> 12/12/2024</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Popular Tags -->
+                        <div class="sidebar-widget">
+                            <h3 class="widget-title">Tags phổ biến</h3>
+                            <div class="popular-tags">
+                                <a href="#" class="popular-tag">Xu hướng</a>
+                                <a href="#" class="popular-tag">Style Tips</a>
+                                <a href="#" class="popular-tag">Bộ sưu tập</a>
+                                <a href="#" class="popular-tag">Phối đồ</a>
+                                <a href="#" class="popular-tag">Mùa đông</a>
+                                <a href="#" class="popular-tag">Minimalism</a>
+                                <a href="#" class="popular-tag">Bền vững</a>
+                                <a href="#" class="popular-tag">Công sở</a>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </article>
+
+        <%- include('partials/footer') %>
+</body>
+
+</html>

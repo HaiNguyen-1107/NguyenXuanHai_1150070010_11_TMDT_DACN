@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh toán VNPay - Fashion Shop</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .vnpay-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .vnpay-logo {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+
+        .vnpay-title {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .order-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .order-info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .order-info-row:last-child {
+            border-bottom: none;
+            font-weight: 600;
+            font-size: 18px;
+            color: #007bff;
+        }
+
+        .qr-section {
+            margin: 30px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+        }
+
+        .qr-code-container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            display: inline-block;
+            margin: 20px 0;
+        }
+
+        .qr-code-container img {
+            width: 250px;
+            height: 250px;
+        }
+
+        .qr-instruction {
+            color: white;
+            font-size: 16px;
+            margin-top: 15px;
+        }
+
+        .qr-instruction i {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .status-checking {
+            margin: 20px 0;
+            padding: 15px;
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            border-radius: 6px;
+        }
+
+        .status-checking i {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .payment-timer {
+            font-size: 18px;
+            color: #dc3545;
+            margin: 20px 0;
+            font-weight: 600;
+        }
+
+        .btn-group {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+
+        .payment-steps {
+            text-align: left;
+            margin: 20px 0;
+            padding: 20px;
+            background: #e7f3ff;
+            border-radius: 12px;
+        }
+
+        .payment-steps h4 {
+            color: #007bff;
+            margin-bottom: 15px;
+        }
+
+        .payment-steps ol {
+            padding-left: 20px;
+        }
+
+        .payment-steps li {
+            margin: 10px 0;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include('partials/header') %>
+
+        <div class="vnpay-container">
+            <img src="https://vnpay.vn/s1/statics.vnpay.vn/2023/6/0oxhzjmxbksr1686814746087.png" alt="VNPay"
+                class="vnpay-logo">
+
+            <h1 class="vnpay-title">Quét mã QR để thanh toán</h1>
+
+            <div class="order-info">
+                <div class="order-info-row">
+                    <span>Mã đơn hàng:</span>
+                    <strong>#<%= orderId %></strong>
+                </div>
+                <div class="order-info-row">
+                    <span>Số tiền:</span>
+                    <strong>
+                        <%= amount.toLocaleString() %>đ
+                    </strong>
+                </div>
+                <div class="order-info-row">
+                    <span>Thời gian hết hạn:</span>
+                    <strong class="payment-timer" id="timer">15:00</strong>
+                </div>
+            </div>
+
+            <div class="qr-section">
+                <div class="qr-instruction">
+                    <i class="fas fa-mobile-alt"></i>
+                    <p><strong>Hướng dẫn thanh toán:</strong></p>
+                </div>
+
+                <div class="qr-code-container">
+                    <img src="<%= qrCodeDataUrl %>" alt="VNPay QR Code">
+                </div>
+
+                <div class="qr-instruction">
+                    <p>Mở ứng dụng ngân hàng và quét mã QR</p>
+                </div>
+            </div>
+
+            <div class="payment-steps">
+                <h4><i class="fas fa-info-circle"></i> Cách thanh toán:</h4>
+                <ol>
+                    <li>Mở ứng dụng ngân hàng hỗ trợ VNPay (VietQR)</li>
+                    <li>Chọn chức năng <strong>Quét mã QR</strong></li>
+                    <li>Quét mã QR phía trên</li>
+                    <li>Xác nhận thông tin và hoàn tất thanh toán</li>
+                </ol>
+            </div>
+
+            <div class="status-checking">
+                <i class="fas fa-sync-alt"></i>
+                <strong>Đang chờ thanh toán...</strong>
+                <p style="margin: 5px 0 0 0; font-size: 14px;">Trang sẽ tự động cập nhật khi bạn thanh toán thành công
+                </p>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="checkPaymentStatus()">
+                    <i class="fas fa-check-circle"></i> Tôi đã thanh toán
+                </button>
+                <a href="/checkout" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Quay lại
+                </a>
+            </div>
+        </div>
+
+        <%- include('partials/footer') %>
+
+            <script>
+                var orderId = <%= orderId %>;
+                var checkInterval;
+                var timeLeft = 15 * 60; // 15 phút
+
+                // Countdown timer
+                function updateTimer() {
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    document.getElementById('timer').textContent =
+                        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        alert('Hết thời gian thanh toán! Vui lòng đặt hàng lại.');
+                        window.location.href = '/checkout';
+                    }
+                    timeLeft--;
+                }
+
+                const timerInterval = setInterval(updateTimer, 1000);
+
+                // Auto check payment status every 3 seconds
+                checkInterval = setInterval(checkPaymentStatus, 3000);
+
+                async function checkPaymentStatus() {
+                    try {
+                        const response = await fetch(`/checkout/check-payment-status/${orderId}`);
+                        const result = await response.json();
+
+                        if (result.status === 'Completed') {
+                            clearInterval(checkInterval);
+                            clearInterval(timerInterval);
+                            window.location.href = `/checkout/order-success?orderId=${orderId}`;
+                        } else if (result.status === 'Failed') {
+                            clearInterval(checkInterval);
+                            clearInterval(timerInterval);
+                            alert('Thanh toán thất bại!');
+                            window.location.href = '/checkout';
+                        }
+                    } catch (error) {
+                        console.error('Error checking payment status:', error);
+                    }
+                }
+
+                // Cleanup on page unload
+                window.addEventListener('beforeunload', () => {
+                    clearInterval(checkInterval);
+                    clearInterval(timerInterval);
+                });
+            </script>
+</body>
+
+</html>

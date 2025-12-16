@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh toán - Fashion Shop</title>
+    <link rel="stylesheet" href="/assets/css/checkout.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <%- include('partials/header') %>
+
+        <!-- CHECKOUT CONTENT -->
+        <div class="checkout-container">
+            <!-- LEFT SIDE - FORM -->
+            <div class="checkout-form">
+                <!-- THÔNG TIN GIAO HÀNG -->
+                <div class="form-section">
+                    <h2 class="section-title">Thông tin giao hàng</h2>
+
+                    <div class="form-group">
+                        <label class="form-label">Email *</label>
+                        <input type="email" id="emailInput" class="form-input" placeholder="Nhập email của bạn"
+                            required>
+                        <span class="error-message" id="emailError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Họ và tên *</label>
+                        <input type="text" id="nameInput" class="form-input" placeholder="Nhập họ và tên" required>
+                        <span class="error-message" id="nameError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Địa chỉ *</label>
+                        <input type="text" id="addressInput" class="form-input" placeholder="Nhập địa chỉ giao hàng"
+                            required>
+                        <span class="error-message" id="addressError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Số điện thoại *</label>
+                        <input type="tel" id="phoneInput" class="form-input" placeholder="Nhập số điện thoại" required>
+                        <span class="error-message" id="phoneError"></span>
+                    </div>
+                </div>
+
+                <!-- PHƯƠNG THỨC THANH TOÁN -->
+                <div class="form-section">
+                    <h2 class="section-title">Phương thức thanh toán</h2>
+
+                    <div class="payment-methods">
+                        <div class="payment-method">
+                            <input type="radio" name="payment" class="payment-radio" value="vnpay">
+                            <div class="payment-icon">
+                                <i class="fas fa-qrcode"></i>
+                            </div>
+                            <div class="payment-info">
+                                <h4>VNPAY QR</h4>
+                                <p>Quét mã QR qua ứng dụng ngân hàng</p>
+                            </div>
+                        </div>
+
+                        <div id="vnpay-warning" class="payment-warning" style="display: none;">
+                            <i class="fas fa-wrench"></i>
+                            <span>Chức năng này đang bảo trì. Vui lòng chọn phương thức khác.</span>
+                        </div>
+
+                        <div class="payment-method">
+                            <input type="radio" name="payment" class="payment-radio" value="vietqr">
+                            <div class="payment-icon">
+                                <i class="fas fa-university"></i>
+                            </div>
+                            <div class="payment-info">
+                                <h4>VietQR - Chuyển khoản ngân hàng</h4>
+                                <p>Quét mã QR chuyển khoản trực tiếp</p>
+                            </div>
+                        </div>
+
+                        <div class="payment-method">
+                            <input type="radio" name="payment" class="payment-radio" value="cod">
+                            <div class="payment-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div class="payment-info">
+                                <h4>Thanh toán khi nhận hàng</h4>
+                                <p>Trả tiền mặt khi nhận được hàng</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- THÔNG BÁO CHỌN VNPay -->
+
+
+                    <p class="payment-note">Vui lòng chọn một phương thức thanh toán</p>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDE - ORDER SUMMARY -->
+            <div class="order-summary">
+                <h2 class="summary-title">Đơn hàng của bạn</h2>
+
+                <div class="order-items" id="orderItems">
+                    <!-- Nội dung đơn hàng sẽ được cập nhật bằng JavaScript -->
+                </div>
+
+                <div class="summary-totals">
+                    <div class="total-row">
+                        <span>Tạm tính:</span>
+                        <span id="subtotal">0đ</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Phí vận chuyển:</span>
+                        <span id="shippingFee">30,000đ</span>
+                    </div>
+                    <div class="total-row total-final">
+                        <span>Tổng cộng:</span>
+                        <span id="totalAmount">30,000đ</span>
+                    </div>
+                </div>
+
+                <button class="btn-checkout" id="checkoutButton">ĐẶT HÀNG NGAY</button>
+            </div>
+        </div>
+
+        <%- include('partials/footer') %>
+
+            <script>
+                // Lấy thông tin sản phẩm từ localStorage (Mua ngay)
+                function getBuyNowProduct() {
+                    const productData = localStorage.getItem('buyNowProduct');
+                    return productData ? JSON.parse(productData) : null;
+                }
+
+                // Lấy thông tin giỏ hàng từ localStorage
+                function getCartItems() {
+                    const cartData = localStorage.getItem('cart');
+                    return cartData ? JSON.parse(cartData) : [];
+                }
+
+                // Hiển thị thông tin đơn hàng
+                function renderOrderSummary() {
+                    const buyNowProduct = getBuyNowProduct();
+                    const cartItems = getCartItems();
+                    const orderItems = document.getElementById('orderItems');
+                    const subtotalEl = document.getElementById('subtotal');
+                    const shippingFeeEl = document.getElementById('shippingFee');
+                    const totalAmountEl = document.getElementById('totalAmount');
+
+                    let products = [];
+
+                    // Ưu tiên "Mua ngay" trước (vì proceedToCheckout đã xóa buyNowProduct rồi)
+                    if (buyNowProduct) {
+                        products = [buyNowProduct];
+                    } else if (cartItems && cartItems.length > 0) {
+                        products = cartItems;
+                    }
+
+                    if (products.length === 0) {
+                        orderItems.innerHTML = '<p class="empty-order">Không có sản phẩm nào</p>';
+                        subtotalEl.textContent = '0đ';
+                        shippingFeeEl.textContent = '0đ';
+                        totalAmountEl.textContent = '0đ';
+                        return;
+                    }
+
+                    // Tính toán tổng tiền
+                    let subtotal = 0;
+                    products.forEach(product => {
+                        subtotal += product.price * product.quantity;
+                    });
+
+                    const shippingFee = 30000;
+                    const totalAmount = subtotal + shippingFee;
+
+                    // Hiển thị danh sách sản phẩm
+                    let itemsHTML = '';
+                    products.forEach(product => {
+                        itemsHTML += `
+                    <div class="order-item">
+                        <img src="${product.image}" alt="${product.name}" class="item-image" 
+                             onerror="this.src='/assets/img/default-product.jpg'">
+                        <div class="item-details">
+                            <div class="item-name">${product.name}</div>
+                            <div class="item-variant">
+                                ${product.color ? `Màu: ${product.color}` : ''} 
+                                ${product.size ? ` - Size: ${product.size}` : ''}
+                            </div>
+                            <div class="item-price">${product.price.toLocaleString()}đ</div>
+                            <div class="item-quantity">Số lượng: ${product.quantity}</div>
+                        </div>
+                    </div>
+                `;
+                    });
+
+                    orderItems.innerHTML = itemsHTML;
+
+                    // Hiển thị tổng tiền
+                    subtotalEl.textContent = `${subtotal.toLocaleString()}đ`;
+                    shippingFeeEl.textContent = `${shippingFee.toLocaleString()}đ`;
+                    totalAmountEl.textContent = `${totalAmount.toLocaleString()}đ`;
+                }
+
+                // Xử lý chọn phương thức thanh toán
+                document.querySelectorAll('.payment-radio').forEach(radio => {
+                    radio.addEventListener('change', function () {
+                        document.querySelectorAll('.payment-method').forEach(method => {
+                            method.classList.remove('selected');
+                        });
+                        this.closest('.payment-method').classList.add('selected');
+
+                        // Hiển thị/ẩn thông báo VNPay
+                        const vnpayWarning = document.getElementById('vnpay-warning');
+                        if (this.value === 'vnpay') {
+                            vnpayWarning.style.display = 'flex';
+                        } else {
+                            vnpayWarning.style.display = 'none';
+                        }
+                    });
+                });
+
+                // Xử lý form thanh toán
+                document.getElementById('checkoutButton').addEventListener('click', async function () {
+                    // Xóa tất cả error messages trước
+                    document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+                    document.querySelectorAll('.form-input').forEach(el => el.style.borderColor = '#ddd');
+
+                    const buyNowProduct = getBuyNowProduct();
+                    const cartItems = getCartItems();
+
+                    let products = [];
+                    // Ưu tiên buyNowProduct trước
+                    if (buyNowProduct) {
+                        products = [buyNowProduct];
+                    } else if (cartItems && cartItems.length > 0) {
+                        products = cartItems;
+                    }
+
+                    if (products.length === 0) {
+                        alert('Không có sản phẩm nào để thanh toán!');
+                        return;
+                    }
+
+                    // Lấy thông tin form
+                    const emailInput = document.getElementById('emailInput');
+                    const nameInput = document.getElementById('nameInput');
+                    const addressInput = document.getElementById('addressInput');
+                    const phoneInput = document.getElementById('phoneInput');
+
+                    const email = emailInput.value.trim();
+                    const name = nameInput.value.trim();
+                    const address = addressInput.value.trim();
+                    const phone = phoneInput.value.trim();
+
+                    let hasError = false;
+
+                    // ✅ VALIDATION - Kiểm tra trống
+                    if (!email) {
+                        document.getElementById('emailError').textContent = 'Vui lòng nhập email';
+                        emailInput.style.borderColor = 'red';
+                        hasError = true;
+                    }
+                    if (!name) {
+                        document.getElementById('nameError').textContent = 'Vui lòng nhập họ và tên';
+                        nameInput.style.borderColor = 'red';
+                        hasError = true;
+                    }
+                    if (!address) {
+                        document.getElementById('addressError').textContent = 'Vui lòng nhập địa chỉ';
+                        addressInput.style.borderColor = 'red';
+                        hasError = true;
+                    }
+                    if (!phone) {
+                        document.getElementById('phoneError').textContent = 'Vui lòng nhập số điện thoại';
+                        phoneInput.style.borderColor = 'red';
+                        hasError = true;
+                    }
+
+                    if (hasError) {
+                        return;
+                    }
+
+                    // ✅ VALIDATION EMAIL - Kiểm tra định dạng email
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(email)) {
+                        document.getElementById('emailError').textContent = 'Email không đúng định dạng (ví dụ: example@gmail.com)';
+                        emailInput.style.borderColor = 'red';
+                        emailInput.focus();
+                        return;
+                    }
+
+                    // ✅ VALIDATION SỐ ĐIỆN THOẠI - Phải 10 số và bắt đầu từ 0
+                    const phoneRegex = /^0\d{9}$/;
+                    if (!phoneRegex.test(phone)) {
+                        document.getElementById('phoneError').textContent = 'Số điện thoại phải có 10 số và bắt đầu từ số 0 (ví dụ: 0123456789)';
+                        phoneInput.style.borderColor = 'red';
+                        phoneInput.focus();
+                        return;
+                    }
+
+                    // Kiểm tra đã chọn phương thức thanh toán chưa
+                    const selectedPayment = document.querySelector('input[name="payment"]:checked');
+                    if (!selectedPayment) {
+                        alert('Vui lòng chọn phương thức thanh toán!');
+                        return;
+                    }
+
+                    // ⚠️ CHẶN VNPAY - BẢO TRÌ
+                    if (selectedPayment.value === 'vnpay') {
+                        // Thông báo đã hiện rồi, chỉ cần focus vào nó
+                        const warning = document.getElementById('vnpay-warning');
+                        warning.style.display = 'flex';
+                        warning.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        return;
+                    }
+
+                    // Tạo form data
+                    const formData = {
+                        email: email,
+                        name: name,
+                        address: address,
+                        phone: phone,
+                        paymentMethod: selectedPayment.value // Lấy từ radio button
+                    };
+
+                    // Tạo order data với tất cả sản phẩm
+                    const orderData = {
+                        items: products.map(product => ({
+                            id: product.id,
+                            variantId: product.variantId || null,
+                            quantity: product.quantity,
+                            price: product.price,
+                            color: product.color,
+                            size: product.size
+                        })),
+                        total: products.reduce((sum, p) => sum + (p.price * p.quantity), 0),
+                        shippingFee: 30000,
+                        paymentMethod: formData.paymentMethod
+                    };
+
+                    console.log('Thông tin đơn hàng:', orderData);
+
+                    try {
+                        // Gửi request tạo đơn hàng
+                        const response = await fetch('/checkout/create-order', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(orderData)
+                        });
+
+                        const result = await response.json();
+
+                        if (result.success) {
+                            // Xóa giỏ hàng sau khi đặt hàng thành công
+                            if (buyNowProduct) {
+                                localStorage.removeItem('buyNowProduct');
+                            } else {
+                                localStorage.removeItem('cart');
+                            }
+
+
+                            // Redirect đến trang kết quả (trả về từ server)
+                            console.log("Redirecting to:", result.redirectUrl);
+                            window.location.href = result.redirectUrl;
+                        } else {
+                            alert('Có lỗi xảy ra: ' + (result.message || 'Vui lòng thử lại'));
+                        }
+                    } catch (error) {
+                        console.error('Lỗi khi tạo đơn hàng:', error);
+                        alert('Có lỗi xảy ra khi xử lý đơn hàng');
+                    }
+                });
+
+                // Khởi tạo trang
+                document.addEventListener('DOMContentLoaded', function () {
+                    renderOrderSummary();
+
+                    // Kiểm tra nếu không có sản phẩm thì thông báo
+                    const buyNowProduct = getBuyNowProduct();
+                    const cartItems = getCartItems();
+
+                    if (!buyNowProduct && (!cartItems || cartItems.length === 0)) {
+                        alert('Không có sản phẩm nào để thanh toán!');
+                        window.location.href = '/products';
+                    }
+
+                    // Chọn mặc định COD
+                    const codRadio = document.querySelector('input[value="cod"]');
+                    if (codRadio) {
+                        codRadio.checked = true;
+                        codRadio.closest('.payment-method').classList.add('selected');
+                    }
+                });
+            </script>
+
+            <style>
+                .payment-note {
+                    color: #666;
+                    font-size: 14px;
+                    margin-top: 10px;
+                    font-style: italic;
+                }
+
+                .empty-order {
+                    text-align: center;
+                    color: #999;
+                    padding: 20px;
+                }
+
+                /* Payment method selected state */
+                .payment-method.selected {
+                    border-color: #0056b3;
+                    background: #f8f9ff;
+                }
+
+                /* Error message styling */
+                .error-message {
+                    display: block;
+                    color: #dc3545;
+                    font-size: 13px;
+                    margin-top: 5px;
+                    min-height: 18px;
+                    font-weight: 500;
+                }
+
+                .form-input.error {
+                    border-color: #dc3545 !important;
+                }
+
+                .payment-warning {
+                    background-color: #fff3cd;
+                    color: #856404;
+                    border: 1px solid #ffeeba;
+                    padding: 10px 15px;
+                    margin-top: 5px;
+                    margin-bottom: 15px;
+                    border-radius: 6px;
+                    font-size: 14px;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    animation: fadeIn 0.3s ease;
+                }
+
+                @keyframes fadeIn {
+                    from {
+                        opacity: 0;
+                        transform: translateY(-5px);
+                    }
+
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+            </style>
+</body>
+
+</html>

@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông tin tài khoản - Fashion Shop</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/footer.css">
+    <link rel="stylesheet" href="/assets/css/user-profile.css">
+    <link rel="stylesheet" href="/assets/css/orders.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+    <%- include('partials/header') %>
+
+        <div class="profile-container">
+            <!-- SIDEBAR MENU -->
+            <div class="profile-sidebar">
+                <div class="user-welcome">
+                    <h3>Xin chào, <%= user.Username %>
+                    </h3>
+                </div>
+                <ul class="profile-menu">
+                    <li class="menu-item <%= tab === 'profile' ? 'active' : '' %>" data-tab="profile">
+                        <a href="javascript:void(0)">
+                            <i class="fas fa-user"></i>
+                            Thông tin tài khoản
+                        </a>
+                    </li>
+                    <li class="menu-item <%= tab === 'orders' ? 'active' : '' %>" data-tab="orders">
+                        <a href="javascript:void(0)">
+                            <i class="fas fa-shopping-bag"></i>
+                            Đơn hàng của bạn
+                        </a>
+                    </li>
+
+                    <li class="menu-item">
+                        <a href="javascript:void(0)" onclick="logout()">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            Đăng xuất
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- MAIN CONTENT - THÔNG TIN TÀI KHOẢN -->
+            <div class="profile-content" id="profile-content">
+                <h2 class="content-title">Thông tin tài khoản</h2>
+
+                <form id="profileForm" class="profile-form">
+                    <div class="form-group">
+                        <label class="form-label">Tên đăng nhập</label>
+                        <input type="text" class="form-input" value="<%= user.Username %>" disabled>
+                        <small class="form-note">Không thể thay đổi tên đăng nhập</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" value="<%= user.Email %>" disabled>
+                        <small class="form-note">Không thể thay đổi email</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Họ và tên *</label>
+                        <input type="text" class="form-input" name="fullName" value="<%= user.FullName || '' %>"
+                            placeholder="Nhập họ và tên của bạn">
+                        <small class="form-note">Ví dụ: Nguyễn Văn A</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Số điện thoại</label>
+                        <input type="tel" class="form-input" name="phone" value="<%= user.Phone || '' %>"
+                            placeholder="Nhập số điện thoại" pattern="[0-9]{10,11}">
+                        <small class="form-note">Ví dụ: 0912345678</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Địa chỉ</label>
+                        <textarea class="form-textarea" name="address" placeholder="Nhập địa chỉ của bạn"
+                            rows="3"><%= user.Address || '' %></textarea>
+                        <small class="form-note">Ví dụ: 123 Đường ABC, Quận 1, TP.HCM</small>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-save">
+                            <i class="fas fa-save"></i>
+                            Lưu thông tin
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- MAIN CONTENT - ĐƠN HÀNG -->
+            <div class="profile-content orders-container" id="orders-content">
+                <h2 class="content-title">Đơn hàng của bạn</h2>
+
+                <div class="orders-container-inner">
+                    <!-- TAB MENU -->
+                    <div class="order-tabs">
+                        <button class="order-tab active" data-tab="Pending">Đang chờ xử lý</button>
+                        <button class="order-tab" data-tab="Shipping">Đang giao</button>
+                        <button class="order-tab" data-tab="Completed">Đã giao</button>
+                        <button class="order-tab" data-tab="Cancelled">Đã hủy</button>
+                    </div>
+
+                    <!-- TAB CONTENT -->
+                    <div class="order-list">
+                        <!-- Đơn hàng đang chờ xử lý -->
+                        <div class="order-group active" id="Pending">
+                            <% if (orders && orders.filter(o=> o.Status === 'Pending').length > 0) { %>
+                                <% orders.filter(o=> o.Status === 'Pending').forEach(order => { %>
+                                    <div class="order-item">
+                                        <div class="order-header">
+                                            <div>
+                                                <div class="order-id">#<%= order.OrderID %>
+                                                </div>
+                                                <div class="order-date">Ngày đặt: <%=
+                                                        order.CreatedAt.toLocaleString('vi-VN') %>
+                                                </div>
+                                            </div>
+                                            <div class="order-status status-pending">Đang chờ xử lý</div>
+                                        </div>
+
+                                        <div class="order-products">
+                                            <% if (order.Items && order.Items.length> 0) { %>
+                                                <% order.Items.forEach(item=> { %>
+                                                    <div class="product-item">
+                                                        <div class="product-image">
+                                                            <% if (item.Image) { %>
+                                                                <img src="<%= item.Image %>"
+                                                                    alt="<%= item.ProductName %>">
+                                                                <% } else { %>
+                                                                    <i class="fas fa-tshirt"></i>
+                                                                    <% } %>
+                                                        </div>
+                                                        <div class="product-info">
+                                                            <div class="product-name">
+                                                                <%= item.ProductName %>
+                                                            </div>
+                                                            <div class="product-variant">
+                                                                Màu: <%= item.Color %> - Size: <%= item.Size %>
+                                                            </div>
+                                                            <div class="product-price">
+                                                                <%= item.Price.toLocaleString('vi-VN') %>đ
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-quantity">x<%= item.Quantity %>
+                                                        </div>
+                                                    </div>
+                                                    <% }); %>
+                                                        <% } else { %>
+                                                            <p class="no-items">Không có sản phẩm</p>
+                                                            <% } %>
+                                        </div>
+
+                                        <div class="order-footer">
+                                            <div class="order-total">Tổng tiền: <%=
+                                                    order.TotalAmount.toLocaleString('vi-VN') %>đ</div>
+                                            <div class="order-actions">
+                                                <button class="btn btn-outline"
+                                                    onclick="cancelOrder(<%= order.OrderID %>)">Hủy đơn</button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% }); %>
+                                        <% } else { %>
+                                            <div class="empty">
+                                                <i class="fas fa-box-open"></i>
+                                                <p>Chưa có đơn hàng đang chờ xử lý</p>
+                                            </div>
+                                            <% } %>
+                        </div>
+
+                        <!-- Đơn hàng đang giao -->
+                        <div class="order-group" id="Shipping">
+                            <% if (orders && orders.filter(o=> o.Status === 'Shipping').length > 0) { %>
+                                <% orders.filter(o=> o.Status === 'Shipping').forEach(order => { %>
+                                    <div class="order-item">
+                                        <div class="order-header">
+                                            <div>
+                                                <div class="order-id">#<%= order.OrderID %>
+                                                </div>
+                                                <div class="order-date">Ngày đặt: <%=
+                                                        order.CreatedAt.toLocaleString('vi-VN') %>
+                                                </div>
+                                            </div>
+                                            <div class="order-status status-pending">Đang giao</div>
+                                        </div>
+
+                                        <div class="order-products">
+                                            <% if (order.Items && order.Items.length> 0) { %>
+                                                <% order.Items.forEach(item=> { %>
+                                                    <div class="product-item">
+                                                        <div class="product-image">
+                                                            <% if (item.Image) { %>
+                                                                <img src="<%= item.Image %>"
+                                                                    alt="<%= item.ProductName %>">
+                                                                <% } else { %>
+                                                                    <i class="fas fa-tshirt"></i>
+                                                                    <% } %>
+                                                        </div>
+                                                        <div class="product-info">
+                                                            <div class="product-name">
+                                                                <%= item.ProductName %>
+                                                            </div>
+                                                            <div class="product-variant">
+                                                                Màu: <%= item.Color %> - Size: <%= item.Size %>
+                                                            </div>
+                                                            <div class="product-price">
+                                                                <%= item.Price.toLocaleString('vi-VN') %>đ
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-quantity">x<%= item.Quantity %>
+                                                        </div>
+                                                    </div>
+                                                    <% }); %>
+                                                        <% } else { %>
+                                                            <p class="no-items">Không có sản phẩm</p>
+                                                            <% } %>
+                                        </div>
+
+                                        <div class="order-footer">
+                                            <div class="order-total">Tổng tiền: <%=
+                                                    order.TotalAmount.toLocaleString('vi-VN') %>đ</div>
+                                        </div>
+                                    </div>
+                        </div>
+                        <% }); %>
+                            <% } else { %>
+                                <div class="empty">
+                                    <i class="fas fa-shipping-fast"></i>
+                                    <p>Chưa có đơn hàng đang giao</p>
+                                </div>
+                                <% } %>
+                    </div>
+
+                    <!-- Đơn hàng đã giao -->
+                    <div class="order-group" id="Completed">
+                        <% if (orders && orders.filter(o=> o.Status === 'Completed').length > 0) { %>
+                            <% orders.filter(o=> o.Status === 'Completed').forEach(order => { %>
+                                <div class="order-item">
+                                    <div class="order-header">
+                                        <div>
+                                            <div class="order-id">#<%= order.OrderID %>
+                                            </div>
+                                            <div class="order-date">Ngày đặt: <%=
+                                                    order.CreatedAt.toLocaleString('vi-VN') %>
+                                            </div>
+                                        </div>
+                                        <div class="order-status status-active">Đã giao</div>
+                                    </div>
+
+                                    <div class="order-products">
+                                        <% if (order.Items && order.Items.length> 0) { %>
+                                            <% order.Items.forEach(item=> { %>
+                                                <div class="product-item">
+                                                    <div class="product-image">
+                                                        <% if (item.Image) { %>
+                                                            <img src="<%= item.Image %>" alt="<%= item.ProductName %>">
+                                                            <% } else { %>
+                                                                <i class="fas fa-tshirt"></i>
+                                                                <% } %>
+                                                    </div>
+                                                    <div class="product-info">
+                                                        <div class="product-name">
+                                                            <%= item.ProductName %>
+                                                        </div>
+                                                        <div class="product-variant">
+                                                            Màu: <%= item.Color %> - Size: <%= item.Size %>
+                                                        </div>
+                                                        <div class="product-price">
+                                                            <%= item.Price.toLocaleString('vi-VN') %>đ
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-quantity">x<%= item.Quantity %>
+                                                    </div>
+                                                </div>
+                                                <% }); %>
+                                                    <% } else { %>
+                                                        <p class="no-items">Không có sản phẩm</p>
+                                                        <% } %>
+                                    </div>
+
+                                    <div class="order-footer">
+                                        <div class="order-total">Tổng tiền: <%=
+                                                order.TotalAmount.toLocaleString('vi-VN') %>đ</div>
+                                    </div>
+                                </div>
+                                <% }); %>
+                                    <% } else { %>
+                                        <div class="empty">
+                                            <i class="fas fa-check-circle"></i>
+                                            <p>Chưa có đơn hàng đã giao</p>
+                                        </div>
+                                        <% } %>
+                    </div>
+
+                    <!-- Đơn hàng đã hủy -->
+                    <div class="order-group" id="Cancelled">
+                        <% if (orders && orders.filter(o=> o.Status === 'Cancelled').length > 0) { %>
+                            <% orders.filter(o=> o.Status === 'Cancelled').forEach(order => { %>
+                                <div class="order-item">
+                                    <div class="order-header">
+                                        <div>
+                                            <div class="order-id">#<%= order.OrderID %>
+                                            </div>
+                                            <div class="order-date">Ngày đặt: <%=
+                                                    order.CreatedAt.toLocaleString('vi-VN') %>
+                                            </div>
+                                            <div class="order-cancelled-by"
+                                                style="color: #e74c3c; font-weight: 500; margin-top: 5px;">
+                                                🚫 Hủy bởi: Bạn
+                                            </div>
+                                        </div>
+                                        <div class="order-status status-cancelled">Đã hủy</div>
+                                    </div>
+
+                                    <div class="order-products">
+                                        <% if (order.Items && order.Items.length> 0) { %>
+                                            <% order.Items.forEach(item=> { %>
+                                                <div class="product-item">
+                                                    <div class="product-image">
+                                                        <% if (item.Image) { %>
+                                                            <img src="<%= item.Image %>" alt="<%= item.ProductName %>">
+                                                            <% } else { %>
+                                                                <i class="fas fa-tshirt"></i>
+                                                                <% } %>
+                                                    </div>
+                                                    <div class="product-info">
+                                                        <div class="product-name">
+                                                            <%= item.ProductName %>
+                                                        </div>
+                                                        <div class="product-variant">
+                                                            Màu: <%= item.Color %> - Size: <%= item.Size %>
+                                                        </div>
+                                                        <div class="product-price">
+                                                            <%= item.Price.toLocaleString('vi-VN') %>đ
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-quantity">x<%= item.Quantity %>
+                                                    </div>
+                                                </div>
+                                                <% }); %>
+                                                    <% } else { %>
+                                                        <p class="no-items">Không có sản phẩm</p>
+                                                        <% } %>
+                                    </div>
+
+                                    <div class="order-footer">
+                                        <div class="order-total">Tổng tiền: <%=
+                                                order.TotalAmount.toLocaleString('vi-VN') %>đ</div>
+                                    </div>
+                                </div>
+                                <% }); %>
+                                    <% } else { %>
+                                        <div class="empty">
+                                            <i class="fas fa-times-circle"></i>
+                                            <p>Chưa có đơn hàng đã hủy</p>
+                                        </div>
+                                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <%- include('partials/footer') %>
+
+            <script>
+                // Lưu giá trị ban đầu để reset form
+                const initialValues = {
+                    fullName: '<%= user.FullName || "" %>',
+                    phone: '<%= user.Phone || "" %>',
+                    address: '<%= user.Address || "" %>'
+                };
+
+                // HÀM ĐĂNG XUẤT
+                function logout() {
+                    Swal.fire({
+                        title: 'Đăng xuất',
+                        text: 'Bạn có chắc chắn muốn đăng xuất?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Đăng xuất',
+                        cancelButtonText: 'Hủy'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            localStorage.removeItem("cart");
+                            window.location.href = "/logout";
+                        }
+                    });
+                }
+
+                // Xử lý submit form
+                document.getElementById('profileForm').addEventListener('submit', async function (e) {
+                    e.preventDefault();
+
+                    const formData = new FormData(this);
+                    const data = {
+                        fullName: formData.get('fullName').trim(),
+                        phone: formData.get('phone').trim(),
+                        address: formData.get('address').trim()
+                    };
+
+                    const saveButton = this.querySelector('.btn-save');
+                    saveButton.disabled = true;
+
+                    try {
+                        const response = await fetch('/update-profile', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(data)
+                        });
+
+                        const result = await response.json();
+
+                        if (result.success) {
+                            alert('Cập nhật thông tin thành công!');
+                        } else {
+                            alert('Lỗi: ' + result.message);
+                        }
+
+                    } catch (error) {
+                        console.error('Lỗi cập nhật:', error);
+                        alert('Có lỗi xảy ra khi cập nhật thông tin');
+                    } finally {
+                        saveButton.disabled = false;
+                    }
+                });
+
+                // CHUYỂN TAB THÔNG TIN/ĐƠN HÀNG
+                const menuItems = document.querySelectorAll('.profile-menu .menu-item[data-tab]');
+                const profileContent = document.getElementById('profile-content');
+                const ordersContent = document.getElementById('orders-content');
+
+                menuItems.forEach(item => {
+                    item.addEventListener('click', function () {
+                        // Cập nhật active menu
+                        menuItems.forEach(i => i.classList.remove('active'));
+                        this.classList.add('active');
+
+                        // Hiển thị nội dung tương ứng
+                        const tab = this.dataset.tab;
+                        if (tab === 'profile') {
+                            profileContent.style.display = 'block';
+                            ordersContent.style.display = 'none';
+                        } else if (tab === 'orders') {
+                            profileContent.style.display = 'none';
+                            ordersContent.style.display = 'block';
+                        }
+                    });
+                });
+
+                // TAB SWITCH ĐƠN HÀNG
+                const orderTabs = document.querySelectorAll(".order-tab");
+                const orderGroups = document.querySelectorAll(".order-group");
+
+                orderTabs.forEach(tab => {
+                    tab.addEventListener("click", () => {
+                        orderTabs.forEach(t => t.classList.remove("active"));
+                        tab.classList.add("active");
+
+                        const target = tab.dataset.tab;
+                        orderGroups.forEach(g => {
+                            g.classList.remove("active");
+                            if (g.id === target) {
+                                g.classList.add("active");
+                            }
+                        });
+                    });
+                });
+
+                // Các hàm xử lý đơn hàng
+                function cancelOrder(orderId) {
+                    if (confirm('Bạn có chắc muốn hủy đơn hàng này?')) {
+                        fetch(`/orders/cancel/${orderId}`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' }
+                        })
+                            .then(response => response.json())
+                            .then(result => {
+                                if (result.success) {
+                                    alert('Đã hủy đơn hàng thành công!');
+                                    location.reload();
+                                } else {
+                                    alert('Lỗi: ' + result.message);
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Lỗi hủy đơn hàng:', error);
+                                alert('Có lỗi xảy ra khi hủy đơn hàng');
+                            });
+                    }
+                }
+
+                function contactSupport() {
+                    alert('Liên hệ hỗ trợ khách hàng');
+                }
+
+                const activeTab = "<%= tab %>";
+
+                // Nếu tab=orders → tự bật tab đơn hàng
+                if (activeTab === "orders") {
+                    document.querySelector('.menu-item[data-tab="profile"]').classList.remove("active");
+                    document.getElementById("profile-content").style.display = "none";
+
+                    document.querySelector('.menu-item[data-tab="orders"]').classList.add("active");
+                    document.getElementById("orders-content").style.display = "block";
+                }
+            </script>
+</body>
+
+</html>

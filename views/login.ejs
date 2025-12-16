@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Fashion Shop</title>
+
+  <!-- Font Awesome icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #6e48aa, #9d50bb);
+      background-size: cover;
+      background-position: center;
+    }
+
+    .login-container {
+      width: 350px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      border-radius: 15px;
+      padding: 40px 30px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      color: white;
+    }
+
+    .login-container h2 {
+      margin-bottom: 25px;
+      font-size: 26px;
+      font-weight: 600;
+    }
+
+    .input-box {
+      position: relative;
+      margin: 15px 0;
+    }
+
+    .input-box input {
+      width: 100%;
+      padding: 12px 40px 12px 15px;
+      border: none;
+      outline: none;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      font-size: 15px;
+    }
+
+    .input-box input::placeholder {
+      color: #eee;
+
+    }
+
+    .input-box i {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #ddd;
+    }
+
+    .options {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin: 10px 0 20px;
+    }
+
+    .options label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .options a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .options a:hover {
+      text-decoration: underline;
+    }
+
+    button {
+      width: 100%;
+      background: white;
+      color: #6e48aa;
+      border: none;
+      padding: 12px;
+      font-weight: 600;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #eee;
+    }
+
+    .register-link {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .register-link a {
+      color: #fff;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .register-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="login-container">
+    <h2>Login</h2>
+    <form id="loginForm">
+      <div class="input-box">
+        <input type="email" id="emailInput" name="email" placeholder="Email" required>
+        <i class="fa-solid fa-user"></i>
+      </div>
+
+      <div class="input-box">
+        <input type="password" id="passwordInput" name="password" placeholder="Password" required>
+        <i class="fa-solid fa-lock"></i>
+      </div>
+
+      <div class="options">
+        <label><input type="checkbox"> Remember me</label>
+        <a href="#">Forgot Password?</a>
+      </div>
+
+      <button type="submit">Login</button>
+
+      <div class="register-link">
+        <p>Don't have an account? <a href="/register">Register</a></p>
+      </div>
+    </form>
+  </div>
+
+
+
+
+
+</body>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  // Toast notification config
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'bottom-end',   // 👈 góc phải dưới
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  });
+
+  // Xử lý form login
+  document.getElementById('loginForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const email = document.getElementById('emailInput').value.trim();
+    const password = document.getElementById('passwordInput').value.trim();
+
+    if (!email || !password) {
+      Toast.fire({
+        icon: 'warning',
+        title: 'Vui lòng nhập đầy đủ thông tin!'
+      });
+      return;
+    }
+
+    try {
+      const response = await fetch('/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        Toast.fire({
+          icon: 'success',
+          title: 'Đăng nhập thành công!'
+        });
+
+        // Redirect sau 1 giây
+        setTimeout(() => {
+          window.location.href = '/home';
+        }, 1000);
+      } else {
+        Toast.fire({
+          icon: 'error',
+          title: result.message || 'Đăng nhập thất bại!'
+        });
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      Toast.fire({
+        icon: 'error',
+        title: 'Có lỗi xảy ra! Vui lòng thử lại.'
+      });
+    }
+  });
+</script>
+
+</html>

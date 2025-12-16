@@ -1,0 +1,114 @@
+<footer>
+    <div class="footer-main">
+        <div class="footer-container">
+            <!-- Brand & Contact Section -->
+            <div class="footer-brand">
+                <h2 class="footer-logo">Fashion Shop</h2>
+                <p class="footer-tagline">Phong cách của bạn, đẳng cấp của chúng tôi</p>
+
+                <div class="footer-info">
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>123 Đường ABC, Quận 1, TP. Hồ Chí Minh</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>Hotline: <strong>1900 6750</strong></span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>Email: support@fashionshop.com</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Thứ 2 - Thứ 6: 8:00 - 20:00 | Thứ 7 - CN: 9:00 - 18:00</span>
+                    </div>
+                </div>
+
+                <div class="footer-social">
+                    <a href="#" class="social-link facebook" aria-label="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-link instagram" aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="social-link twitter" aria-label="Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-link youtube" aria-label="YouTube">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a href="#" class="social-link tiktok" aria-label="TikTok">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Customer Support -->
+            <div class="footer-links">
+                <h3 class="footer-title">Hỗ trợ khách hàng</h3>
+                <ul class="footer-menu">
+                    <li><a href="/contact">Liên hệ</a></li>
+                    <li><a href="/contact">Chính sách vận chuyển</a></li>
+                    <li><a href="/contact">Chính sách đổi trả</a></li>
+                </ul>
+            </div>
+
+            <!-- About Us -->
+            <div class="footer-links">
+                <h3 class="footer-title">Về chúng tôi</h3>
+                <ul class="footer-menu">
+                    <li><a href="/about">Giới thiệu</a></li>
+                    <li><a href="/news">Tin tức</a></li>
+                    <li><a href="/contact">Tuyển dụng</a></li>
+                    <li><a href="/contact">Điều khoản dịch vụ</a></li>
+                </ul>
+            </div>
+
+            <!-- Newsletter -->
+            <div class="footer-newsletter">
+                <h3 class="footer-title">Đăng ký nhận tin</h3>
+                <p class="newsletter-text">Nhận thông tin khuyến mãi và xu hướng thời trang mới nhất</p>
+                <form class="newsletter-form" onsubmit="return handleNewsletterSubmit(event)">
+                    <input type="email" placeholder="Nhập email của bạn..." required>
+                    <button type="submit">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+                <div class="payment-methods">
+                    <p class="payment-title">Phương thức thanh toán</p>
+                    <div class="payment-icons">
+                        <div class="payment-item">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span>COD</span>
+                        </div>
+                        <div class="payment-item">
+                            <i class="fas fa-qrcode"></i>
+                            <span>VietQR</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+        <div class="footer-container">
+            <p class="copyright">
+                © 2024 <strong>Fashion Shop</strong>. All rights reserved. | Designed with <i class="fas fa-heart"></i>
+                by Fashion Team
+            </p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    function handleNewsletterSubmit(event) {
+        event.preventDefault();
+        const email = event.target.querySelector('input[type="email"]').value;
+        alert('Cảm ơn bạn đã đăng ký! Chúng tôi sẽ gửi thông tin đến: ' + email);
+        event.target.reset();
+        return false;
+    }
+</script>

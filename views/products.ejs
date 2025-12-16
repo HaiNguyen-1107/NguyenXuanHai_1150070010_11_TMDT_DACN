@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tất cả sản phẩm | Fashion Shop</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/home.css">
+  <link rel="stylesheet" href="/assets/css/footer.css">
+  <link rel="stylesheet" href="/assets/css/products.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+  <%- include('partials/header') %>
+
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb">
+      <a href="/home">Trang chủ</a>
+      <span>›</span>
+      <span class="current">Tất cả sản phẩm</span>
+    </div>
+
+    <section class="categories">
+      <div class="categories-list">
+        <div class="category-item">
+          <a href="menshirt">
+            <img src="/assets/img/menshirt.jpg">
+            <h3>Áo nam</h3>
+          </a>
+        </div>
+
+        <div class="category-item">
+          <a href="menpants">
+            <img src="/assets/img/menpants.jpg">
+            <h3>Quần nam</h3>
+          </a>
+        </div>
+
+        <div class="category-item">
+          <a href="menaccessories">
+            <img src="/assets/img/men accessories .jpg">
+            <h3>Phụ kiện nam</h3>
+          </a>
+        </div>
+
+        <div class="category-item">
+          <a href="womenshirt">
+            <img src="/assets/img/women's shirt.jpg">
+            <h3>Áo nữ</h3>
+          </a>
+        </div>
+
+        <div class="category-item">
+          <a href="womenpants">
+            <img src="/assets/img/women's pants.jpg">
+            <h3>Quần nữ</h3>
+          </a>
+        </div>
+
+        <div class="category-item">
+          <a href="womenaccessories">
+            <img src="/assets/img/phukien.jpg">
+            <h3>Phụ kiện nữ</h3>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== LAYOUT 2 CỘT ========== -->
+    <div class="products-container">
+      <div class="filter-sidebar">
+        <h3 class="filter-title">Bộ lọc sản phẩm</h3>
+
+        <!-- Thương hiệu -->
+        <div class="filter-group">
+          <h4>Thương hiệu</h4>
+          <label><input type="checkbox" class="filter-brand" value="Nike" onchange="applyFilters()"> Nike</label>
+          <label><input type="checkbox" class="filter-brand" value="Adidas" onchange="applyFilters()"> Adidas</label>
+          <label><input type="checkbox" class="filter-brand" value="Gucci" onchange="applyFilters()"> Gucci</label>
+          <label><input type="checkbox" class="filter-brand" value="LV" onchange="applyFilters()"> LV</label>
+        </div>
+
+        <!-- Loại sản phẩm -->
+        <div class="filter-group">
+          <h4>Loại sản phẩm</h4>
+          <label><input type="checkbox" class="filter-category" value="Áo" onchange="applyFilters()"> Áo</label>
+          <label><input type="checkbox" class="filter-category" value="Quần" onchange="applyFilters()"> Quần</label>
+          <label><input type="checkbox" class="filter-category" value="Phụ kiện" onchange="applyFilters()"> Phụ
+            kiện</label>
+        </div>
+
+        <!-- Giá -->
+        <div class="filter-group">
+          <h4>Giá</h4>
+          <label><input type="checkbox" class="filter-price" value="0-200000" onchange="applyFilters()"> Dưới
+            200k</label>
+          <label><input type="checkbox" class="filter-price" value="200000-500000" onchange="applyFilters()"> 200k –
+            500k</label>
+          <label><input type="checkbox" class="filter-price" value="500000-1000000" onchange="applyFilters()"> 500k – 1
+            triệu</label>
+          <label><input type="checkbox" class="filter-price" value="1000000-999999999" onchange="applyFilters()"> Trên 1
+            triệu</label>
+        </div>
+      </div>
+
+      <div class="products-content">
+        <!-- PHẦN SẮP XẾP -->
+        <div class="sort-section">
+          <h3 class="sort-title">Tất cả sản phẩm</h3>
+          <div class="sort-dropdown">
+            <button class="sort-button">
+              Sắp xếp theo
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="sort-options">
+              <div class="sort-option active">Mặc định</div>
+              <div class="sort-option">A – Z</div>
+              <div class="sort-option">Z – A</div>
+              <div class="sort-option">Giá tăng dần</div>
+              <div class="sort-option">Giá giảm dần</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-list">
+          <% products.forEach(p=> { %>
+            <div class="product-card" data-price="<%= p.Price %>" data-category-id="<%= p.CategoryID %>"
+              data-name="<%= p.ProductName.toLowerCase() %>">
+              <a href="/product/<%= p.ProductID %>" class="product-link">
+                <div class="product-img">
+                  <img src="<%= p.Image %>" alt="<%= p.ProductName %>">
+                </div>
+                <div class="product-info">
+                  <h4 class="product-name">
+                    <%= p.ProductName %>
+                  </h4>
+                  <p class="product-price">
+                    <%= p.Price.toLocaleString() %>đ
+                  </p>
+                </div>
+              </a>
+
+              <div class="product-actions">
+                <button class="btn-wishlist"><i class="fa-regular fa-heart"></i></button>
+                <button class="btn-add-cart" data-id="<%= p.ProductID %>" data-name="<%= p.ProductName %>"
+                  data-price="<%= p.Price %>" data-image="<%= p.Image %>">
+                  <i class="fa-solid fa-cart-shopping"></i>
+                </button>
+              </div>
+            </div>
+            <% }) %>
+        </div>
+      </div>
+    </div>
+
+    <%- include('partials/footer') %>
+
+      <script>
+        // ========== SORT DROPDOWN FUNCTIONALITY ==========
+        const sortButton = document.querySelector('.sort-button');
+        const sortOptions = document.querySelector('.sort-options');
+        const sortOptionItems = document.querySelectorAll('.sort-option');
+        const productList = document.querySelector('.product-list');
+
+        // Toggle dropdown
+        sortButton.addEventListener('click', function (e) {
+          e.stopPropagation();
+          sortOptions.classList.toggle('show');
+          sortButton.classList.toggle('active');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function (e) {
+          if (!e.target.closest('.sort-dropdown')) {
+            sortOptions.classList.remove('show');
+            sortButton.classList.remove('active');
+          }
+        });
+
+        // Handle sort option selection
+        sortOptionItems.forEach(option => {
+          option.addEventListener('click', function () {
+            // Remove active class from all options
+            sortOptionItems.forEach(opt => opt.classList.remove('active'));
+
+            // Add active class to selected option
+            this.classList.add('active');
+
+            // Update button text
+            sortButton.childNodes[0].textContent = this.textContent + ' ';
+
+            // Close dropdown
+            sortOptions.classList.remove('show');
+            sortButton.classList.remove('active');
+
+            // Sort products
+            sortProducts(this.textContent.trim());
+          });
+        });
+
+        function sortProducts(sortType) {
+          const products = Array.from(productList.querySelectorAll('.product-card'));
+
+          products.sort((a, b) => {
+            const nameA = a.querySelector('.product-name').textContent.trim();
+            const nameB = b.querySelector('.product-name').textContent.trim();
+            const priceA = parseInt(a.querySelector('.product-price').textContent.replace(/[^\d]/g, ''));
+            const priceB = parseInt(b.querySelector('.product-price').textContent.replace(/[^\d]/g, ''));
+
+            switch (sortType) {
+              case 'A – Z':
+                return nameA.localeCompare(nameB, 'vi');
+              case 'Z – A':
+                return nameB.localeCompare(nameA, 'vi');
+              case 'Giá tăng dần':
+                return priceA - priceB;
+              case 'Giá giảm dần':
+                return priceB - priceA;
+              default: // Mặc định
+                return 0;
+            }
+          });
+
+          // Re-append sorted products
+          products.forEach(product => productList.appendChild(product));
+        }
+
+        // ========== FILTER FUNCTIONALITY ==========
+        function applyFilters() {
+          const brandFilters = Array.from(document.querySelectorAll('.filter-brand:checked')).map(cb => cb.value);
+          const categoryFilters = Array.from(document.querySelectorAll('.filter-category:checked')).map(cb => cb.value);
+          const priceFilters = Array.from(document.querySelectorAll('.filter-price:checked')).map(cb => cb.value);
+
+          const productCards = document.querySelectorAll('.product-card');
+
+          productCards.forEach(card => {
+            let showCard = true;
+
+            // Filter by brand (check if product name contains brand)
+            if (brandFilters.length > 0) {
+              const productName = card.getAttribute('data-name');
+              const hasBrand = brandFilters.some(brand => productName.includes(brand.toLowerCase()));
+              if (!hasBrand) showCard = false;
+            }
+
+            // Filter by category (CategoryID: 1=Áo nam, 2=Quần nam, 3=Phụ kiện nam, 4=Áo nữ, 5=Quần nữ, 6=Phụ kiện nữ)
+            if (categoryFilters.length > 0) {
+              const categoryId = parseInt(card.getAttribute('data-category-id'));
+              let matchCategory = false;
+
+              categoryFilters.forEach(cat => {
+                if (cat === 'Áo' && (categoryId === 1 || categoryId === 4)) matchCategory = true;
+                if (cat === 'Quần' && (categoryId === 2 || categoryId === 5)) matchCategory = true;
+                if (cat === 'Phụ kiện' && (categoryId === 3 || categoryId === 6)) matchCategory = true;
+              });
+
+              if (!matchCategory) showCard = false;
+            }
+
+            // Filter by price
+            if (priceFilters.length > 0) {
+              const price = parseInt(card.getAttribute('data-price'));
+              let matchPrice = false;
+
+              priceFilters.forEach(range => {
+                const [min, max] = range.split('-').map(Number);
+                if (price >= min && price <= max) matchPrice = true;
+              });
+
+              if (!matchPrice) showCard = false;
+            }
+
+            // Show/hide card
+            card.style.display = showCard ? '' : 'none';
+          });
+        }
+
+        // ========== ADD TO CART FUNCTIONALITY ==========
+
+        // Thêm sự kiện cho nút thêm vào giỏ hàng
+        document.querySelectorAll('.btn-add-cart').forEach(button => {
+          button.addEventListener('click', async function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            // 🔥 FIX: Lấy thông tin sản phẩm và variant mặc định
+            const productId = parseInt(this.getAttribute('data-id'));
+
+            // Gọi API để lấy variant mặc định (màu đen, size S)
+            try {
+              const response = await fetch(`/api/product/${productId}/default-variant`);
+              const variantData = await response.json();
+
+              const product = {
+                id: productId,
+                name: this.getAttribute('data-name'),
+                price: parseInt(this.getAttribute('data-price')),
+                image: this.getAttribute('data-image'),
+                variantId: variantData.variantId || null,
+                color: variantData.color || 'Đen', // Mặc định màu đen
+                size: variantData.size || 'S',     // Mặc định size S
+                quantity: 1
+              };
+
+              if (window.addToCart) {
+                const success = await window.addToCart(product);
+                if (success) {
+                  // Hiệu ứng thông báo
+                  this.innerHTML = '<i class="fa-solid fa-check"></i>';
+                  this.style.background = '#28a745';
+                  setTimeout(() => {
+                    this.innerHTML = '<i class="fa-solid fa-cart-shopping"></i>';
+                    this.style.background = '';
+                  }, 1000);
+                }
+              }
+            } catch (error) {
+              console.error('Lỗi khi lấy variant:', error);
+              // Fallback: thêm không có variant
+              const product = {
+                id: productId,
+                name: this.getAttribute('data-name'),
+                price: parseInt(this.getAttribute('data-price')),
+                image: this.getAttribute('data-image'),
+                variantId: null,
+                color: 'Đen',
+                size: 'S',
+                quantity: 1
+              };
+              window.addToCart(product);
+            }
+          });
+        });
+
+      </script>
+</body>
+
+</html>
